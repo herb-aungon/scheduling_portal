@@ -1,0 +1,101 @@
+var data_post = [];
+var token_id = 0;
+var data = 0;
+var user = 0;
+var url = "http://192.168.1.69/"
+
+
+
+$( document ).ready(function() {
+    if(localStorage.getItem("user")){
+    var elem = document.getElementById("logout");
+    elem.value = "Logout: " + localStorage.getItem("user");
+    console.log( user );
+    console.log(token_id);
+    }
+});
+
+
+$("#logout").click(function() {
+    window.location.href = url + "login";
+    data_post.push({
+        id: localStorage.getItem("token"),
+    });
+
+    $.ajax({
+        type : "DELETE",
+        url : url + "logout",
+        data: JSON.stringify(data_post, null, '\t'),
+        contentType: 'application/json;charset=UTF-8',
+        headers: {
+            'X-token':'',
+            'Content-Type':'application/json'
+        },
+        success: function(result) {
+            console.log(result);
+
+            // json_result = JSON.parse(result);
+            // token_id = json_result['data'];
+            // user = json_result['reason'];
+            // console.log(json_result);
+        },
+        async: false
+    });
+
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
+});
+
+
+$("#staff").click(function() {
+    token = localStorage.getItem("token");
+    window.location.href = url + "home/" + token + "/" + "staff_management";
+});
+
+
+
+
+// $("#login").click(function() {
+//     var get_token = 0;
+//     var username = $('#username').val();
+//     var password = $('#userpassword').val();
+//     data_post.push({
+//         username:username,
+//         password:password
+//     });
+//     console.log(data_post);
+
+
+//     $.ajax({
+//         type : "POST",
+//         url : "login",
+//         data: JSON.stringify(data_post, null, '\t'),
+//         contentType: 'application/json;charset=UTF-8',
+//         headers: {
+//             'X-token':'',
+//             'Content-Type':'application/json'
+//         },
+//         success: function(result) {
+//             //console.log(result);                                                                                                                                                                           
+
+//             json_result = JSON.parse(result);
+//             token_id = json_result['data'];
+//             user = json_result['reason'];
+//             console.log(json_result);
+//         },
+//         async: false
+//     });
+
+//     if(token_id){
+//         console.log("valid");
+//         console.log(token_id);
+//         localStorage.setItem("token", token_id);
+//         localStorage.setItem("user", user);
+//         window.location.href = url + "home/" + localStorage.getItem("token");
+//     }else{
+//         console.log("invalid");
+//         location.reload();
+//     }
+
+// });

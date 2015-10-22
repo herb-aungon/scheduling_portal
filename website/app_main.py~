@@ -1,0 +1,126 @@
+#!/usr/bin/env python                                                                                                                                                                                       
+#-*- coding: utf-8 -*- 
+
+from flask import Flask,request, render_template, flash, jsonify, make_response, Response, url_for, redirect
+from pymongo import MongoClient
+import json, datetime, local_settings
+from modules.sched_portal_objects import *
+
+config = local_settings.env
+app = Flask(__name__)
+
+
+"""
+Initialise Mongdo DB Connection
+"""
+client = MongoClient(config.get('MONGODB_HOST'))
+mongodb = client[config.get('MONGODB_COLLECTION')]
+
+"""
+Flask config for changing Debug mode, SECRET_KEY
+"""
+app.config.update(dict(
+    DEBUG=True,
+    SECRET_KEY='development key',
+))
+
+
+#Used to display errors on webpage
+@app.errorhandler( 500 )
+def internal_500_error( exception ):
+     #app.logger.exception( exception )
+     return json.dumps( exception )
+
+@app.errorhandler( 404 )
+def internal_404_error( exception ):
+     #app.logger.exception( exception )
+     return 'scheduler <br/>\n%s<br/>\n%s' % ( exception, request.url )
+
+@app.errorhandler( 401 )
+def internal_401_error( exception ):
+     #app.logger.exception( exception )
+     return 'scheduler<br/>\n%s<br/>\n%s' % ( exception, request.url )
+
+
+def default_encoder( obj, encoder=json.JSONEncoder() ):
+    if isinstance( obj, ObjectId ): 
+        return str( obj )  
+    if isinstance(obj, datetime):
+        return obj.strftime( '%Y-%m-%d %H:%M:%S' )
+    return encoder.default( obj )
+
+
+@app.route("/login", methods = [ 'GET' ] )
+def log_in_get():
+     token_id = "hi" #request.headers.get('x-token')
+     resp = make_response()
+     resp.headers.add('X-token',token_id)
+
+     return render_template('log_in.html',resp=resp )
+
+@app.route("/login", methods = [ 'POST' ] )
+def log_in_post():
+     token_id = "hi" #request.headers.get('x-token')
+     try:
+          payload = request.data
+          payload_json = json.loads(payload)
+          user_details = payload_json[0]
+          user_details.update({ "headers":dict(request.headers), "cookies":dict(request.cookies) })
+          user_init = user(mongodb)
+          get_result = user_init.check_login(user_details)
+          result = json.dumps (get_result, default=default_encoder, indent = 2, sort_keys = True)
+          resp = make_response(result)
+          resp.headers.add('X-token',token_id)
+     except Exception as e:
+          resp="Error! %s " % e
+     return resp
+
+@app.route("/login", methods = [ 'OPTIONS' ] )
+def log_in_options():
+     return ''
+
+@app.route("/tlogin", methods = [ 'GET' ] )
+def log_in_optionas():
+     return 'test'
+
+
+@app.route("/home/<token_id>", methods = [ 'GET' ] )
+def home_get(token_id):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          sched_init = view_sched(mongodb)
+          get_sched = sched_init.months()
+          #resp = json.dumps(get_sched.get('data'))
+          resp = render_template('home.html', months=get_sched.get('data'))
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+          flash(message)
+     return resp
+
+
+@app.route("/home", methods = [ 'OPTIONS' ] )
+def home_options():
+     #token_id = "hi" #request.headers.get('x-token')
+     return ''
+
+@app.route("/months", methods = [ 'GET' ] )
+def months_get():
+     token_id = request.headers.get('X-token')
+     
+
+     return 
+
+
+
+     # t = request.headers.get('X-token')
+     # test = mongodb.user.find_one({"username":"herb"},{"_id":0})
+     # test.update({'t':t})
+     #return json.dumps(test)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+    #app.run()

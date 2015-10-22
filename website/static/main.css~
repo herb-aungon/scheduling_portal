@@ -1,0 +1,310 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+body {
+  background-color:#fff;
+  -webkit-font-smoothing: antialiased;
+  font: normal 14px Roboto,arial,sans-serif;
+}
+
+#logout{
+float:right;
+margin: 5px 0 0 0;
+}
+
+#export{
+padding-right:550px;
+
+}
+
+
+.btn-month{
+  width:900px;
+  margin: 5px 0 0px 0;
+
+}
+
+
+.view_sched {
+  -webkit-border-radius: 7;
+  -moz-border-radius: 7;
+  border-radius: 7px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 14px;
+  background: #526775;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.view_sched:hover {
+  background: #979fa3;
+  background-image: -webkit-linear-gradient(top, #979fa3, #adb5ba);
+  background-image: -moz-linear-gradient(top, #979fa3, #adb5ba);
+  background-image: -ms-linear-gradient(top, #979fa3, #adb5ba);
+  background-image: -o-linear-gradient(top, #979fa3, #adb5ba);
+  background-image: linear-gradient(to bottom, #979fa3, #adb5ba);
+  text-decoration: none;
+}
+
+#January- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #2e9c55;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#January-:hover {
+  background: #3cfc6f;
+  background-image: -webkit-linear-gradient(top, #3cfc6f, #34d965);
+  background-image: -moz-linear-gradient(top, #3cfc6f, #34d965);
+  background-image: -ms-linear-gradient(top, #3cfc6f, #34d965);
+  background-image: -o-linear-gradient(top, #3cfc6f, #34d965);
+  background-image: linear-gradient(to bottom, #3cfc6f, #34d965);
+  text-decoration: none;
+}
+
+#February- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #3498db;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#February-:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
+#March- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #912031;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#March-:hover {
+  background: #fa3c6f;
+  background-image: -webkit-linear-gradient(top, #fa3c6f, #c21359);
+  background-image: -moz-linear-gradient(top, #fa3c6f, #c21359);
+  background-image: -ms-linear-gradient(top, #fa3c6f, #c21359);
+  background-image: -o-linear-gradient(top, #fa3c6f, #c21359);
+  background-image: linear-gradient(to bottom, #fa3c6f, #c21359);
+  text-decoration: none;
+}
+
+#April- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #dbc372;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#April-:hover {
+  background: #e0c775;
+  background-image: -webkit-linear-gradient(top, #e0c775, #ede89c);
+  background-image: -moz-linear-gradient(top, #e0c775, #ede89c);
+  background-image: -ms-linear-gradient(top, #e0c775, #ede89c);
+  background-image: -o-linear-gradient(top, #e0c775, #ede89c);
+  background-image: linear-gradient(to bottom, #e0c775, #ede89c);
+  text-decoration: none;
+}
+
+#May- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #d9a173;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#May-:hover {
+  background: #c4ae81;
+  background-image: -webkit-linear-gradient(top, #c4ae81, #d4b988);
+  background-image: -moz-linear-gradient(top, #c4ae81, #d4b988);
+  background-image: -ms-linear-gradient(top, #c4ae81, #d4b988);
+  background-image: -o-linear-gradient(top, #c4ae81, #d4b988);
+  background-image: linear-gradient(to bottom, #c4ae81, #d4b988);
+  text-decoration: none;
+}
+
+#June- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #d98773;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#June-:hover {
+  background: #c4a085;
+  background-image: -webkit-linear-gradient(top, #c4a085, #e3c7ad);
+  background-image: -moz-linear-gradient(top, #c4a085, #e3c7ad);
+  background-image: -ms-linear-gradient(top, #c4a085, #e3c7ad);
+  background-image: -o-linear-gradient(top, #c4a085, #e3c7ad);
+  background-image: linear-gradient(to bottom, #c4a085, #e3c7ad);
+  text-decoration: none;
+}
+
+#July- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #d4cc5d;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#July-:hover {
+  background: #dbcb97;
+  background-image: -webkit-linear-gradient(top, #dbcb97, #e3ddae);
+  background-image: -moz-linear-gradient(top, #dbcb97, #e3ddae);
+  background-image: -ms-linear-gradient(top, #dbcb97, #e3ddae);
+  background-image: -o-linear-gradient(top, #dbcb97, #e3ddae);
+  background-image: linear-gradient(to bottom, #dbcb97, #e3ddae);
+  text-decoration: none;
+}
+
+#August- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #5dd4cc;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#August-:hover {
+  background: #84ebca;
+  background-image: -webkit-linear-gradient(top, #84ebca, #aee3d7);
+  background-image: -moz-linear-gradient(top, #84ebca, #aee3d7);
+  background-image: -ms-linear-gradient(top, #84ebca, #aee3d7);
+  background-image: -o-linear-gradient(top, #84ebca, #aee3d7);
+  background-image: linear-gradient(to bottom, #84ebca, #aee3d7);
+  text-decoration: none;
+}
+
+#September- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #975dd4;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#September-:hover {
+  background: #bf86eb;
+  background-image: -webkit-linear-gradient(top, #bf86eb, #ceaee3);
+  background-image: -moz-linear-gradient(top, #bf86eb, #ceaee3);
+  background-image: -ms-linear-gradient(top, #bf86eb, #ceaee3);
+  background-image: -o-linear-gradient(top, #bf86eb, #ceaee3);
+  background-image: linear-gradient(to bottom, #bf86eb, #ceaee3);
+  text-decoration: none;
+}
+
+#October- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #d4715d;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#October-:hover {
+  background: #eba488;
+  background-image: -webkit-linear-gradient(top, #eba488, #e3c0ae);
+  background-image: -moz-linear-gradient(top, #eba488, #e3c0ae);
+  background-image: -ms-linear-gradient(top, #eba488, #e3c0ae);
+  background-image: -o-linear-gradient(top, #eba488, #e3c0ae);
+  background-image: linear-gradient(to bottom, #eba488, #e3c0ae);
+  text-decoration: none;
+}
+
+#November- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #16b8c7;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#November-:hover {
+  background: #88e6eb;
+  background-image: -webkit-linear-gradient(top, #88e6eb, #aee3d8);
+  background-image: -moz-linear-gradient(top, #88e6eb, #aee3d8);
+  background-image: -ms-linear-gradient(top, #88e6eb, #aee3d8);
+  background-image: -o-linear-gradient(top, #88e6eb, #aee3d8);
+  background-image: linear-gradient(to bottom, #88e6eb, #aee3d8);
+  text-decoration: none;
+}
+
+#December- {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: Courier New;
+  color: #ffffff;
+  font-size: 20px;
+  background: #8e14a3;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#December-:hover {
+  background: #dc88eb;
+  background-image: -webkit-linear-gradient(top, #dc88eb, #d1aee3);
+  background-image: -moz-linear-gradient(top, #dc88eb, #d1aee3);
+  background-image: -ms-linear-gradient(top, #dc88eb, #d1aee3);
+  background-image: -o-linear-gradient(top, #dc88eb, #d1aee3);
+  background-image: linear-gradient(to bottom, #dc88eb, #d1aee3);
+  text-decoration: none;
+}

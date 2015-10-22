@@ -1,0 +1,66 @@
+{% extends "home.html" %}
+
+{% block staff_management %}
+   {{ super() }}
+
+    <form class="form-inline" role="form">
+      <legend>Add New Staff Member</legend>
+        <div class="form-group">
+            <label class="sr-only" for="inputinit">Initials</label>
+            <input type="text" class="form-control" id="initials" placeholder="enter initials" required />
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="input_first">First Name</label>
+            <input type="text" class="form-control" id="first_name" placeholder="enter firstname" required />
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="input_last">Last Name</label>
+            <input type="test" class="form-control" id="last_name" placeholder="enter lastname" required />
+        </div>
+	<button id="input_submit" name="input_submit" class="btn btn-success">Submit</button>
+	<button id="reset" name="" class="btn btn-danger">Reset</button>
+    </form>
+    <br>
+
+   <table class="table table-hover" id="staff_table">
+     <thead>
+       <tr>
+         <th>Initials</th>
+         <th>First Name</th>
+         <th>Surname</th>
+	 <th>Action</th>
+       </tr>
+     </thead>
+     <tbody>
+       {% for member in staff %}
+       <tr id="{{ member.initials }}">
+         <td>{{ member.initials }}</td>
+         <td>{{ member.first_name }}</td>
+         <td>{{ member.last_name }}</td>
+         <td>
+	   <button id="{{ member.initials }}" name="input_submit" class="view_profile">View Details</button>
+         </td>
+       </tr>
+       {% endfor %}
+       
+     </tbody>
+   </table>
+
+
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger">
+  <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong> <a>{{ message }}</a></strong>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+
+
+{% endblock %}
