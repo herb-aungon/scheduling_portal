@@ -16,11 +16,22 @@
         <div class="form-group">
             <label class="sr-only" for="input_last">Last Name</label>
             <input type="test" class="form-control" id="last_name" placeholder="enter lastname" required />
-        </div>
-	<button id="input_submit" name="input_submit" class="btn btn-success">Submit</button>
-	<button id="reset" name="" class="btn btn-danger">Reset</button>
+        </div></br>
+	<button id="reset" name="" class="btn btn-warning"><span class="glyphicon glyphicon-refresh">Reset</span></button>
+	<button id="input_submit" name="input_submit" class="btn btn-success"><span class=" glyphicon glyphicon-save">Add</span></button>
     </form>
     <br>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger">
+  <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong> <a>{{ message }}</a></strong>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
 
    <table class="table table-hover" id="staff_table">
@@ -34,32 +45,18 @@
      </thead>
      <tbody>
        {% for member in staff %}
-       <tr id="{{ member.last_name }}{{ member.initials }}">
+       <tr id="{{ member.initials }}">
          <td>{{ member.initials }}</td>
          <td>{{ member.first_name }}</td>
          <td>{{ member.last_name }}</td>
          <td>
-           <a href="#" class="nav nav-pills" role="presentation" id="manage_sched_{{ member.last_name }}{{ member.initials }}">View Details</a>
+	   <button id="{{ member.initials }}" name="input_submit" class="view_profile">View Details</button>
          </td>
        </tr>
        {% endfor %}
        
      </tbody>
    </table>
-
-
-
-
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-danger">
-  <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong> <a>{{ message }}</a></strong>
-</div>
-{% endfor %}
-{% endif %}
-{% endwith %}
 
 
 

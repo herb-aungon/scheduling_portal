@@ -1,17 +1,10 @@
-var data_post = [];
-var token_id = 0;
-var data = 0;
-var user = 0;
 var url = "http://192.168.1.69/"
-
 
 
 $( document ).ready(function() {
     if(localStorage.getItem("user")){
     var elem = document.getElementById("logout");
     elem.value = "Logout: " + localStorage.getItem("user");
-    console.log( user );
-    console.log(token_id);
     }
 });
 
@@ -33,11 +26,6 @@ $("#logout").click(function() {
         },
         success: function(result) {
             console.log(result);
-
-            // json_result = JSON.parse(result);
-            // token_id = json_result['data'];
-            // user = json_result['reason'];
-            // console.log(json_result);
         },
         async: false
     });
@@ -49,53 +37,60 @@ $("#logout").click(function() {
 
 
 $("#staff").click(function() {
-    token = localStorage.getItem("token");
-    window.location.href = url + "home/" + token + "/" + "staff_management";
+    var token = localStorage.getItem("token");
+    window.location.href = url + "home/" + token + "/staff_management";
+});
+
+$("#home").click(function() {
+    var token = localStorage.getItem("token");
+    window.location.href = url + "home/" + token;
 });
 
 
+$("#reset").click(function() {
+$('.form-control').val("");
+});
 
 
-// $("#login").click(function() {
-//     var get_token = 0;
-//     var username = $('#username').val();
-//     var password = $('#userpassword').val();
-//     data_post.push({
-//         username:username,
-//         password:password
-//     });
-//     console.log(data_post);
+$("#input_submit").click(function() {
+
+    var details = $('#initials, #first_name, #last_name')
+    var json_obj = {}
+
+    details.each(function() {
+    	json_obj[this.id] = $(this).val();
+    });
+    var json_details= JSON.stringify( json_obj);
+    console.log(json_details);
+    var token = localStorage.getItem("token");
+
+    $.ajax({
+        type : "POST",
+        url : url + "home/" + token + "/staff_management",
+        data: json_details,
+        contentType: 'application/json;charset=UTF-8',
+        success: function(result) {
+            console.log(result);
+        },
+        async: false
+    });
+    history.go(0)
+    $('.form-control').val("");
+});
+
+$(".view_profile").click(function () {
+    var id = $(this).attr("id");
+    var token = localStorage.getItem("token");
+    var current = window.location.href + "/" + id;
+    console.log(current);
+    window.location.replace(current);
+});
 
 
-//     $.ajax({
-//         type : "POST",
-//         url : "login",
-//         data: JSON.stringify(data_post, null, '\t'),
-//         contentType: 'application/json;charset=UTF-8',
-//         headers: {
-//             'X-token':'',
-//             'Content-Type':'application/json'
-//         },
-//         success: function(result) {
-//             //console.log(result);                                                                                                                                                                           
-
-//             json_result = JSON.parse(result);
-//             token_id = json_result['data'];
-//             user = json_result['reason'];
-//             console.log(json_result);
-//         },
-//         async: false
-//     });
-
-//     if(token_id){
-//         console.log("valid");
-//         console.log(token_id);
-//         localStorage.setItem("token", token_id);
-//         localStorage.setItem("user", user);
-//         window.location.href = url + "home/" + localStorage.getItem("token");
-//     }else{
-//         console.log("invalid");
-//         location.reload();
-//     }
-
-// });
+$(".view_t").click(function () {
+    var id = $(this).attr("id");
+    var token = localStorage.getItem("token");
+    var current = window.location.href + "/" + id;
+    console.log(current);
+    window.location.replace(current);
+});

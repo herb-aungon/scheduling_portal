@@ -1,4 +1,4 @@
-import  pprint, dpath.util, requests, datetime, json, bson, copy
+import  pprint, dpath.util, requests, datetime, json, bson, copy, calendar
 from bson.objectid import ObjectId
 
 class user( ):
@@ -118,9 +118,12 @@ class staff_management( ):
         
     def add(self, details):
         try:
-            self.__mongodb.staff.insert(details)
-            self.__result['success']=True
-            self.__result['reason']="Staff added(%s)" % details.get('initials')
+            if len(details.get('initials')) == 0:
+                self.__result['reason']="Failed to add!Initials cannot be empty"
+            else:                
+                self.__mongodb.staff.insert(details)
+                self.__result['success']=True
+                self.__result['reason']="Staff added(%s)" % details.get('initials')
         except Exception as e:
             self.__result['reason']="Failed! %s" % e
             
@@ -144,15 +147,34 @@ class staff_management( ):
         return self.__result
 
 
+    def delete(self, data):
+        try:
+            if len(data.get('initials')) == 0:
+                self.__result['reason']="Failed to update!Initials cannot be empty"
+            else:
+                self.__mongodb.staff.remove({"_id": ObjectId(data.get('_id'))})
+
+                self.__result['success']=True
+                self.__result['reason']="(%s) has been deleted" % data.get('initials')
+        except Exception as e:
+            self.__result['reason']="Failed to delete %s" % e
+            
+        return self.__result
+
+
+
+
+
 class profile( ):
     def __init__(self, mongodb):
         self.__mongodb = mongodb
         self.__result = {'success':False, 'reason':None, 'data':None}
-        
+        self.__now = datetime.datetime.now()        
+
     def get(self, initials):
         profile = None
         try:
-            profile_raw = self.__mongodb.staff.find( { 'initials':initials }, {'_id':0} )
+            profile_raw = self.__mongodb.staff.find( { 'initials':initials } )
             profile=[]
             for p in profile_raw:
                 profile.append(p)
@@ -178,24 +200,66 @@ class profile( ):
             self.__result['reason']="Failed! %s" % e
         
         if profile == None:
-            self.__result['reason']="No Data found for %s" % (data.get('first_name'), data.get('last_name'))
+            self.__result['reason']="No Data found for %s %s" % (data.get('first_name'), data.get('last_name'))
         else:
-            self.__result['reason']="Data found for %s" % (data.get('first_name'), data.get('last_name'))
             
             try:
                 self.__mongodb.staff.update(
                     {
-                        "intialss":data.get('initials')
+                        "_id": ObjectId(data.get('_id'))
                     },
                     {
-                        '$set': dict( data )
+                        '$set': {
+                            "initials": data.get('initials'),
+                            "first_name": data.get('first_name'),
+                            "last_name": data.get('last_name')
+                      }
+
                     },
                     upsert= False,
                     multi=False
                 )
+                self.__result['reason']="%s %s has been updated" % (data.get('first_name'), data.get('last_name'))
                 self.__result['success']=True
             except Exception as e:
-                self.__result['reason']="Failed! %s" % e
+                self.__result['reason']="Failed to Update!Reason: %s" % e
         
         return self.__result
         
+
+    def gen_month(self, data):
+        try:
+            if len(data.get('month')) == 0:
+                self.__result['reason']="Failed to add!Initials cannot be empty"
+            else:
+                months_int = {
+                    "January":1, 
+                    "February":2, 
+                    "March":3, 
+                    "April":4, 
+                    "May":5, 
+                    "June":6, 
+                    "July":7, 
+                    "August":8, 
+                    "September":9, 
+                    "October":10, 
+                    "November":11, 
+                    "December":12
+                }
+                month = data.get('month')
+                number_days =calendar.monthrange(self.__now.year, months_int.get(month) )[1]
+                date = {}
+                for days in range(1,int(number_days)+1):
+                    date_raw = datetime.date(self.__now.year,months_int.get(month),days )
+                    day=date_raw.strftime('%A')
+                    date.update({str(date_raw):day})
+
+
+                self.__result['success']=True
+                self.__result['reason']="Dates for selected month generated"
+                self.__result['data']=date
+        except Exception as e:
+            self.__result['reason']="Failed! %s" % e
+
+            
+        return self.__result

@@ -3,7 +3,7 @@
 
 from flask import Flask,request, render_template, flash, jsonify, make_response, Response, url_for, redirect
 from pymongo import MongoClient
-import json, datetime, local_settings
+import json, datetime, local_settings, calendar
 from modules.sched_portal_objects import *
 
 config = local_settings.env
@@ -171,7 +171,7 @@ def staff_add(token_id):
      return resp
 
 @app.route("/home/<token_id>/staff_management/<prof_init>", methods = [ 'GET' ] )
-def profile_get(token_id,prof_init):
+def profile_get_(token_id,prof_init):
      token_init = token(mongodb)
      token_auth= token_init.token_validator(token_id)
 
@@ -183,9 +183,11 @@ def profile_get(token_id,prof_init):
           if get_profile.get('success') == False:
                message = json.dumps(get_profile.get('reason'))
                flash(message)
-          # flash(get_profile.get('data'))
-          resp = render_template('profile.html', profile=get_profile.get('data'))
-          #resp = json.dumps(get_profile.get('data'), default=default_encoder)
+
+          sched_init = view_sched(mongodb)
+          get_sched = sched_init.months()
+
+          resp = render_template('profile.html', profile=get_profile.get('data'), months = get_sched.get('data'))
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
@@ -193,26 +195,98 @@ def profile_get(token_id,prof_init):
      return resp
 
 
-# @app.route("home/<token_id>/staff_management/<initialsa>", methods = [ 'GET' ] )
-# def profile_get(token_id, initialsa):
-#      token_init = token(mongodb)
-#      token_auth= token_init.token_validator(token_id)
+@app.route("/home/<token_id>/staff_management/<prof_init>", methods = [ 'PUT' ] )
+def profile_put(token_id,prof_init):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
 
-#      if token_auth.get('success')==True:
-#           profile_init = profile(mongodb)
-#           get_profile = profile_init.get(initials)
-#           resp = json.dumps(get_profile.get('data'), default=default_encoder)
+     if token_auth.get('success')==True:
+          try:
+               payload = request.data
+               payload_json = json.loads(payload)
+          except Exception as e:
+               resp="Failed to load data!Reason: %s" % e
+               return json.dumps(resp)
 
-#           if get_profile.get('success') == False:
-#                message = json.dumps(get_profile.get('reason'))
-#                flash(message)
-#           resp = render_template('profile.html', profile=profile.get('data'))
+          profile_init = profile(mongodb)
+          update_profile = profile_init.update(payload_json)
 
-#      else:
-#           message = json.dumps("Failed: %s" % token_auth.get('reason'))
-#           resp = redirect(url_for('log_in_get'))
+          if update_profile.get('success') == False:
+               message = json.dumps(update_profile.get('reason'))
+               flash(message)
 
-#      return resp
+          resp =json.dumps(update_profile, indent=2)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+
+     return resp
+
+
+@app.route("/home/<token_id>/staff_management/<prof_init>", methods = [ 'DELETE' ] )
+def profile_del(token_id,prof_init):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          try:
+               payload = request.data
+               payload_json = json.loads(payload)
+          except Exception as e:
+               resp="Failed to load data!Reason: %s" % e
+               return json.dumps(resp)
+          
+          staff_init = staff_management(mongodb)
+          delete_staff = staff_init.delete(payload_json)
+
+          if delete_staff.get('success') == False:
+               message = json.dumps(delete_staff.get('reason'))
+               flash(message)
+
+          resp = json.dumps(delete_staff, default=default_encoder)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+
+     return resp
+
+
+@app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'GET' ] )
+def profile_sched_get(token_id,prof_init):
+     return ''
+
+@app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'OPTIONS' ] )
+def profile_sched_opts(token_id,prof_init):
+     return ''
+
+
+@app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'POST' ] )
+def profile_sched_post(token_id,prof_init):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          try:
+               payload = request.data
+               payload_json = json.loads(payload)
+          except Exception as e:
+               resp="Failed to load data!Reason: %s" % e
+               return json.dumps(resp)
+
+          gen_month_init = profile(mongodb)
+          gen_month = gen_month_init.gen_month(payload_json)
+
+          if gen_month.get('success') == False:
+               message = json.dumps(gen_month.get('reason'))
+               flash(message)
+          
+          resp =json.dumps(gen_month,default=default_encoder, indent=2)
+          #resp = render_template('profile.html', dates = data)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+
+     return resp
 
 
 if __name__ == "__main__":

@@ -29,10 +29,17 @@ class user( ):
                 self.__result['data']=token
             except Exception as e:
                 self.__result['reason']= "Error! %s" % e 
-                sys.exit( 1 )
             
         return self.__result
 
+    def logout(self, token_id):
+        try:
+            self.__mongodb.token.remove( { "_id": ObjectId(token_id) } )
+            self.__result['success']=True
+            self.__result['reason']="Token(%s) Deleted.Logout successful" % token_id
+        except Exception as e:
+            self.__result['reason']= "Error! %s" % e 
+        return self.__result
 
 
 class token( ):
@@ -69,6 +76,7 @@ class token( ):
                 self.__response['success'] = True
 
             else:
+                self.__mongodb.token.remove( { "_id": ObjectId(token_id) } )
                 self.__response['reason'] = "Login session expired"
                 self.__response['success'] = False
 
@@ -78,11 +86,6 @@ class token( ):
             self.__response['reason'] ="token invalid"
             self.__response['success'] = False
             return  self.__response
-
-
-
-
-
 
 class view_sched( ):
     def __init__( self, mongodb ):
@@ -106,3 +109,93 @@ class view_sched( ):
             self.__result['success']=True
             self.__result['data']=get_months.get('months')
         return self.__result
+
+
+class staff_management( ):
+    def __init__(self, mongodb):
+        self.__mongodb = mongodb
+        self.__result = {'success':False, 'reason':None, 'data':None}
+        
+    def add(self, details):
+        try:
+            self.__mongodb.staff.insert(details)
+            self.__result['success']=True
+            self.__result['reason']="Staff added(%s)" % details.get('initials')
+        except Exception as e:
+            self.__result['reason']="Failed! %s" % e
+            
+        return self.__result
+
+    def get(self):
+        try:
+            staff_raw = self.__mongodb.staff.find({}, { '_id':0 })
+            staff = []
+            for s in staff_raw:
+                staff.append(s)
+        except Exception as e:
+            self.__result['reason']="Failed! %s" % e
+
+        if len(staff) == 0:
+            self.__result['reason']="No Data Found!"
+        else:
+            self.__result['reason']="Data Found"
+            self.__result['success']=True
+            self.__result['data']=staff
+        return self.__result
+
+
+class profile( ):
+    def __init__(self, mongodb):
+        self.__mongodb = mongodb
+        self.__result = {'success':False, 'reason':None, 'data':None}
+        
+    def get(self, initials):
+        profile = None
+        try:
+            profile_raw = self.__mongodb.staff.find( { 'initials':initials }, {'_id':0} )
+            profile=[]
+            for p in profile_raw:
+                profile.append(p)
+            self.__result['success']=True
+        except Exception as e:
+            self.__result['reason']="Failed! %s" % e
+
+        if len(profile)==0:
+            self.__result['reason']="No Data found for %s" % initials
+        else:
+            self.__result['reason']="Data found for %s" % initials
+            self.__result['data']=profile
+
+        return self.__result
+
+    def update(self, data):
+        profile = None
+        try:
+            profile = self.__mongodb.staff.find_one( { 'initials':data.get('initials') } )
+            self.__result['success']=True
+
+        except Exception as e:
+            self.__result['reason']="Failed! %s" % e
+        
+        if profile == None:
+            self.__result['reason']="No Data found for %s" % (data.get('first_name'), data.get('last_name'))
+        else:
+            self.__result['reason']="Data found for %s" % (data.get('first_name'), data.get('last_name'))
+            
+            try:
+                self.__mongodb.staff.update(
+                    {
+                        "intialss":data.get('initials')
+                    },
+                    {
+                        '$set': dict( data )
+                    },
+                    upsert= False,
+                    multi=False
+                )
+                self.__result['success']=True
+            except Exception as e:
+                self.__result['reason']="Failed! %s" % e
+        
+        return self.__result
+        

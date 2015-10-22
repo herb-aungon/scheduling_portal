@@ -79,10 +79,23 @@ def log_in_post():
 def log_in_options():
      return ''
 
-@app.route("/tlogin", methods = [ 'GET' ] )
-def log_in_optionas():
-     return 'test'
+@app.route("/logout", methods = [ 'DELETE' ] )
+def logout_del():
+     try:
+          payload = request.data
+          payload_json = json.loads(payload)
+          id_raw = payload_json[0]
+          logout_init = user(mongodb)
+          logout = logout_init.logout(id_raw.get('id'))
+          result = json.dumps (logout, default=default_encoder, indent = 2, sort_keys = True)
+          resp = make_response(result)
+     except Exception as e:
+          resp="Error! %s " % e
+     return resp
 
+@app.route("/logout", methods = [ 'OPTIONS' ] )
+def logout_options():
+     return ''
 
 @app.route("/home/<token_id>", methods = [ 'GET' ] )
 def home_get(token_id):
@@ -93,7 +106,7 @@ def home_get(token_id):
           sched_init = view_sched(mongodb)
           get_sched = sched_init.months()
           #resp = json.dumps(get_sched.get('data'))
-          resp = render_template('home.html', months=get_sched.get('data'))
+          resp = render_template('monthly.html', months=get_sched.get('data'))
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
@@ -101,24 +114,105 @@ def home_get(token_id):
      return resp
 
 
-@app.route("/home", methods = [ 'OPTIONS' ] )
-def home_options():
+@app.route("/home/<token_id>", methods = [ 'OPTIONS' ] )
+def home_options(token_id):
      #token_id = "hi" #request.headers.get('x-token')
      return ''
 
-@app.route("/months", methods = [ 'GET' ] )
-def months_get():
-     token_id = request.headers.get('X-token')
-     
+@app.route("/home/<token_id>/staff_management", methods = [ 'GET' ] )
+def staff_get(token_id):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
 
-     return 
+     if token_auth.get('success')==True:
+          staff_init = staff_management(mongodb)
+          get_staff = staff_init.get()
+          if get_staff.get('success') == False:
+               message = json.dumps(get_staff.get('reason'))
+               flash(message)
+          #flash(get_staff.get('data'))
+          resp = render_template('staff_management.html', staff=get_staff.get('data'))
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+          flash(message)
+     return resp
+
+@app.route("/home/<token_id>/staff_management", methods = [ 'OPTIONS' ] )
+def staff_options(token_id):
+     #token_id = "hi" #request.headers.get('x-token')
+     return ''
+
+@app.route("/home/<token_id>/staff_management", methods = [ 'POST' ] )
+def staff_add(token_id):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+
+          try:
+               payload = request.data
+               payload_json = json.loads(payload)
+          except Exception as e:
+               resp="Failed to load data!Reason: %s" % e
+               return json.dumps(resp)
+
+          staff_init = staff_management(mongodb)
+          add_staff = staff_init.add(payload_json)
+
+          if add_staff.get('success') == False:
+               message = json.dumps(add_staff.get('reason'))
+               flash(message)
+          resp = json.dumps(add_staff, default=default_encoder, indent = 1)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+          flash(message)
+     return resp
+
+@app.route("/home/<token_id>/staff_management/<prof_init>", methods = [ 'GET' ] )
+def profile_get(token_id,prof_init):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          profile_init = profile(mongodb)
+          get_profile = profile_init.get(prof_init)
 
 
+          if get_profile.get('success') == False:
+               message = json.dumps(get_profile.get('reason'))
+               flash(message)
+          # flash(get_profile.get('data'))
+          resp = render_template('profile.html', profile=get_profile.get('data'))
+          #resp = json.dumps(get_profile.get('data'), default=default_encoder)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
 
-     # t = request.headers.get('X-token')
-     # test = mongodb.user.find_one({"username":"herb"},{"_id":0})
-     # test.update({'t':t})
-     #return json.dumps(test)
+     return resp
+
+
+# @app.route("home/<token_id>/staff_management/<initialsa>", methods = [ 'GET' ] )
+# def profile_get(token_id, initialsa):
+#      token_init = token(mongodb)
+#      token_auth= token_init.token_validator(token_id)
+
+#      if token_auth.get('success')==True:
+#           profile_init = profile(mongodb)
+#           get_profile = profile_init.get(initials)
+#           resp = json.dumps(get_profile.get('data'), default=default_encoder)
+
+#           if get_profile.get('success') == False:
+#                message = json.dumps(get_profile.get('reason'))
+#                flash(message)
+#           resp = render_template('profile.html', profile=profile.get('data'))
+
+#      else:
+#           message = json.dumps("Failed: %s" % token_auth.get('reason'))
+#           resp = redirect(url_for('log_in_get'))
+
+#      return resp
 
 
 if __name__ == "__main__":

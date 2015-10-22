@@ -13,19 +13,28 @@
     <!-- Custom styles for this template -->
     <link href="{{url_for('static', filename='bootstrap.css') }}" type=text/css rel="stylesheet">
     <link href="{{url_for('static', filename='main.css') }}" type=text/css rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
   </head>
   <body>
 
       <div class="container">
 
 	<ul class="nav nav-tabs">
-	  <li role="presentation" class="active" ><a  id="home" href="#">Scheduling Portal</a></li>
+	  <li role="presentation" class="active"><a  id="home" href="#">Scheduling Portal</a></li>
 	  <li role="presentation" ><a id="staff" href="#">Staff Management</a></li>
 	  <li role="presentation" ><a id="export" href="#">Export Schedule</a></li>
 
 	  <div class="btn-group">
-	    <input type="button" class="btn btn-info" value="Logout:" id="logout">
+            <button type="button" class="btn btn-default" id="logout">
+              <span class="glyphicon glyphicon-log-out">Logout<!-- Logout:<input type="button" value="Logout:" id="logout_value"> --></span>
+            </button>
+
+
 	  </div>
+
 	</ul>
 
 	<div style="background:transparent !important" class="jumbotron">
@@ -33,6 +42,7 @@
 
 	    {% block monthly %}{% endblock %}  
 	    {% block staff_management %}{% endblock %}
+	    {% block profile %}{% endblock %}
 	    {% block export_sched %}{% endblock %}
 	  </div>
 

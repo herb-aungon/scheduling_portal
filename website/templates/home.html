@@ -6,13 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <!-- <link rel="icon" href="../../favicon.ico"> -->
+    <!-- date picker -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+
+
+
     <title>Scheduler</title>
     <!-- Bootstrap core CSS -->
     <link href="{{url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="{{url_for('static', filename='bootstrap.css') }}" type=text/css rel="stylesheet">
     <link href="{{url_for('static', filename='main.css') }}" type=text/css rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
   </head>
   <body>
 
@@ -24,8 +35,13 @@
 	  <li role="presentation" ><a id="export" href="#">Export Schedule</a></li>
 
 	  <div class="btn-group">
-	    <input type="button" class="btn btn-info" value="Logout:" id="logout">
+            <button type="button" class="btn btn-default" id="logout">
+              <span class="glyphicon glyphicon-log-out">Logout<!-- Logout:<input type="button" value="Logout:" id="logout_value"> --></span>
+            </button>
+
+
 	  </div>
+
 	</ul>
 
 	<div style="background:transparent !important" class="jumbotron">
@@ -38,8 +54,6 @@
 	  </div>
 
 	</div>	
-
-
 
 
     <footer class="footer">

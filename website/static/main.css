@@ -67,3 +67,31 @@ padding-right:550px;
   background-image: linear-gradient(to bottom, #9ba3a8, #676e73);
   text-decoration: none;
 }
+
+#_id{
+    width:300px;
+    margin:0 0 5px 0;
+    padding: 5px 10px 5px 10px;
+}
+#initials{
+    width:300px;
+    margin:0 0 5px 0;
+    padding: 5px 10px 5px 10px;
+}
+#first_name{
+    width:300px;
+    margin:0 0 5px 0;
+    padding: 5px 10px 5px 10px;
+}
+#last_name{
+    width:300px;
+    margin:0 0 5px 0;
+    padding: 5px 10px 5px 10px;
+}
+
+
+.create_schdule{
+
+    border-style: solid;
+    border-top-style: dotted;
+}
