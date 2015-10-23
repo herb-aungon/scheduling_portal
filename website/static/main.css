@@ -1,0 +1,97 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+body {
+  background-color:#fff;
+  -webkit-font-smoothing: antialiased;
+  font: normal 14px Roboto,arial,sans-serif;
+}
+
+#logout{
+float:right;
+margin: 5px 0 0 0;
+}
+
+#export{
+padding-right:550px;
+
+}
+
+
+.btn-month{
+  width:900px;
+  margin: 5px 0 0px 0;
+
+}
+
+
+.view_sched {
+  -webkit-border-radius: 7;
+  -moz-border-radius: 7;
+  border-radius: 7px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 14px;
+  background: #526775;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.view_sched:hover {
+  background: #979fa3;
+  background-image: -webkit-linear-gradient(top, #979fa3, #adb5ba);
+  background-image: -moz-linear-gradient(top, #979fa3, #adb5ba);
+  background-image: -ms-linear-gradient(top, #979fa3, #adb5ba);
+  background-image: -o-linear-gradient(top, #979fa3, #adb5ba);
+  background-image: linear-gradient(to bottom, #979fa3, #adb5ba);
+  text-decoration: none;
+}
+
+
+.view_profile {
+  -webkit-border-radius: 6;
+  -moz-border-radius: 6;
+  border-radius: 6px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 12px;
+  background: #827f82;
+  padding: 5px 10px 5px 10px;
+  text-decoration: none;
+}
+
+.view_profile:hover {
+  background: #9ba3a8;
+  background-image: -webkit-linear-gradient(top, #9ba3a8, #676e73);
+  background-image: -moz-linear-gradient(top, #9ba3a8, #676e73);
+  background-image: -ms-linear-gradient(top, #9ba3a8, #676e73);
+  background-image: -o-linear-gradient(top, #9ba3a8, #676e73);
+  background-image: linear-gradient(to bottom, #9ba3a8, #676e73);
+  text-decoration: none;
+}
+
+#_id{
+    width:300px;
+    margin:0 0 5px 0;
+    padding: 5px 10px 5px 10px;
+}
+#initials{
+    width:300px;
+    margin:0 0 5px 0;
+    padding: 5px 10px 5px 10px;
+}
+#first_name{
+    width:300px;
+    margin:0 0 5px 0;
+    padding: 5px 10px 5px 10px;
+}
+#last_name{
+    width:300px;
+    margin:0 0 5px 0;
+    padding: 5px 10px 5px 10px;
+}
+
+
+.create_schdule{
+
+    border-style: solid;
+    border-top-style: dotted;
+}

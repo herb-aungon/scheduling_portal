@@ -1,0 +1,54 @@
+{% extends "home.html" %}
+
+{% block profile %}
+   {{ super() }}
+
+<!-- Form Name -->
+<legend>Edit</legend>
+<form class="form-horizontal" role="form">
+
+{% for p in profile %}
+<!-- Text input-->
+
+    <div class="form-group">
+      <label id="edit_area" class="control-label col-sm-2" for="email">Initials:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="pwd" value="{{ p.initials }}">
+      </div>
+
+      <label class="control-label col-sm-2" for="email">First Name:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="pwd" value="{{ p.first_name }}">
+      </div>
+      <label class="control-label col-sm-2" for="email">Last Name:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="pwd"  value="{{ p.last_name }}">
+      </div>
+
+    </div>
+{% endfor %}
+
+<div class="form-group">
+  <div class="col-md-8">
+    <button id="button1id" name="button1id" class="btn btn-success">Good Button</button>
+    <button id="button2id" name="button2id" class="btn btn-danger">Scary Button</button>
+  </div>
+</div>
+
+</form>
+
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger">
+  <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong> <a>{{ message }}</a></strong>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+{% endblock %}

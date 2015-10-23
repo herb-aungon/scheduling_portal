@@ -1,0 +1,28 @@
+{% extends "home.html" %}
+
+{% block staff_management %}
+   {{ super() }}
+	  <div class="container">
+	    <table class="table table-hover">
+	      <thead>
+		<tr>
+		  <th>Month</th>
+		  <th>Last Updated</th>
+		  <th>Action</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		{% for month in months %}
+		<tr id="{{ month }}">
+		  <td>{{ month }}</td>
+		  <td>some date</td>
+		  <td>
+		     <a href="#" class="nav nav-pills" role="presentation" id="{{ month }}">View Schedule</a>
+		  </td>		  
+		</tr>		
+		{% endfor %}
+
+	      </tbody>
+	    </table>
+
+{% endblock %}
