@@ -118,12 +118,18 @@ class staff_management( ):
         
     def add(self, details):
         try:
+<<<<<<< HEAD
             if len(details.get('initials')) == 0:
                 self.__result['reason']="Failed to add!Initials cannot be empty"
             else:                
                 self.__mongodb.staff.insert(details)
                 self.__result['success']=True
                 self.__result['reason']="Staff added(%s)" % details.get('initials')
+=======
+            self.__mongodb.staff.insert(details)
+            self.__result['success']=True
+            self.__result['reason']="Staff added(%s)" % details.get('initials')
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
         except Exception as e:
             self.__result['reason']="Failed! %s" % e
             
@@ -147,6 +153,7 @@ class staff_management( ):
         return self.__result
 
 
+<<<<<<< HEAD
     def delete(self, data):
         try:
             if len(data.get('initials')) == 0:
@@ -165,16 +172,26 @@ class staff_management( ):
 
 
 
+=======
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 class profile( ):
     def __init__(self, mongodb):
         self.__mongodb = mongodb
         self.__result = {'success':False, 'reason':None, 'data':None}
+<<<<<<< HEAD
         self.__now = datetime.datetime.now()        
 
     def get(self, initials):
         profile = None
         try:
             profile_raw = self.__mongodb.staff.find( { 'initials':initials } )
+=======
+        
+    def get(self, initials):
+        profile = None
+        try:
+            profile_raw = self.__mongodb.staff.find( { 'initials':initials }, {'_id':0} )
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
             profile=[]
             for p in profile_raw:
                 profile.append(p)
@@ -200,12 +217,19 @@ class profile( ):
             self.__result['reason']="Failed! %s" % e
         
         if profile == None:
+<<<<<<< HEAD
             self.__result['reason']="No Data found for %s %s" % (data.get('first_name'), data.get('last_name'))
         else:
+=======
+            self.__result['reason']="No Data found for %s" % (data.get('first_name'), data.get('last_name'))
+        else:
+            self.__result['reason']="Data found for %s" % (data.get('first_name'), data.get('last_name'))
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
             
             try:
                 self.__mongodb.staff.update(
                     {
+<<<<<<< HEAD
                         "_id": ObjectId(data.get('_id'))
                     },
                     {
@@ -215,10 +239,17 @@ class profile( ):
                             "last_name": data.get('last_name')
                       }
 
+=======
+                        "intialss":data.get('initials')
+                    },
+                    {
+                        '$set': dict( data )
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
                     },
                     upsert= False,
                     multi=False
                 )
+<<<<<<< HEAD
                 self.__result['reason']="%s %s has been updated" % (data.get('first_name'), data.get('last_name'))
                 self.__result['success']=True
             except Exception as e:
@@ -263,3 +294,11 @@ class profile( ):
 
             
         return self.__result
+=======
+                self.__result['success']=True
+            except Exception as e:
+                self.__result['reason']="Failed! %s" % e
+        
+        return self.__result
+        
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b

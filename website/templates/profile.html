@@ -59,10 +59,17 @@
 <form class="form-horizontal">
 <fieldset>
 
+<<<<<<< HEAD
 
 <legend>Add Schedule <span class="glyphicon glyphicon-plus"></span></legend>
 
 <!-- Select Month -->
+=======
+<!-- Form Name -->
+<legend>Add Schedule <span class="glyphicon glyphicon-plus"></span></legend>
+
+<!-- Select Basic -->
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 <div class="form-group">
   <label class="col-md-4 control-label" for="select_month">Select Month:</label>
 
@@ -78,13 +85,22 @@
 
 </div>
 
+<<<<<<< HEAD
 <!-- Select date -->
+=======
+
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 <div class="form-group" hidden id="date_picker">
   <label class="col-md-4 control-label" for="select_month">Select Date:</label>
 
   <div class="col-md-4">
+<<<<<<< HEAD
     <select id="select_date" name="date" class="form-control">
     <option selected>View Dates</option> 
+=======
+    <select id="select_month" name="months" class="form-control">
+    <option selected>Months</option> 
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
     {% for date in datess %}
     <option value="{{ date }}">{{ date }}</option>
     {% endfor %}
@@ -94,6 +110,7 @@
 
 </div>
 
+<<<<<<< HEAD
 <!-- Select time from -->
 <div class="form-group" hidden id="time_picker_from">
   <label class="col-md-4 control-label" for="select_time">From:</label>
@@ -129,6 +146,9 @@
     <button id="reset_sched_form" class="btn btn-warning"><span class="glyphicon glyphicon-refresh">Reset</span></button>
   </div>
 </div>
+=======
+
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 
 
 </fieldset>

@@ -167,7 +167,10 @@ $('select').on('change', function() {
     var json_data= JSON.stringify( json_month);
     
     console.log(json_data);
+<<<<<<< HEAD
 
+=======
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
     var token = localStorage.getItem("token");
     var init=document.getElementById("initials").value;
     var gen_url = url + "home/" + token + "/staff_management/" + init + "/create_sched"
@@ -179,7 +182,11 @@ $('select').on('change', function() {
         data: json_data,
         contentType: 'application/json;charset=UTF-8',
         success: function(result) {
+<<<<<<< HEAD
             console.log(result);
+=======
+            //console.log(result);
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
             json_result = JSON.parse(result);
             data_ = json_result['data'];
             //console.log(data);
@@ -189,6 +196,7 @@ $('select').on('change', function() {
         async: false
     });
 
+<<<<<<< HEAD
     //disable dropdown or select month once selected
     $("#select_month").prop("disabled", true);
 
@@ -253,5 +261,16 @@ $("#create_schedule").click(function() {
 $("#reset_sched_form").click(function() {
     history.go(0)
 });
+=======
+$.each(data, function() {
+  $.each(this, function(k, v) {
+    console.log(k, v);
+
+  });
+});
+
+
+})
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 
 

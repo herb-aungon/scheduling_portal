@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import  pprint, dpath.util, requests, datetime, json, bson, copy, calendar, collections
+=======
+import  pprint, dpath.util, requests, datetime, json, bson, copy, calendar
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 from bson.objectid import ObjectId
 
 class user( ):
@@ -248,12 +252,20 @@ class profile( ):
                 }
                 month = data.get('month')
                 number_days =calendar.monthrange(self.__now.year, months_int.get(month) )[1]
+<<<<<<< HEAD
                 date ={}
+=======
+                date = {}
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
                 for days in range(1,int(number_days)+1):
                     date_raw = datetime.date(self.__now.year,months_int.get(month),days )
                     day=date_raw.strftime('%A')
                     date.update({str(date_raw):day})
+<<<<<<< HEAD
                 #collections.OrderedDict(date)
+=======
+
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 
                 self.__result['success']=True
                 self.__result['reason']="Dates for selected month generated"
@@ -263,6 +275,7 @@ class profile( ):
 
             
         return self.__result
+<<<<<<< HEAD
 
 
 
@@ -289,3 +302,5 @@ class schedule( ):
         }
         self.__result['data']=sched
         return self.__result
+=======
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b

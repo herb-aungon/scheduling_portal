@@ -116,6 +116,7 @@ def home_get(token_id):
 
 @app.route("/home/<token_id>", methods = [ 'OPTIONS' ] )
 def home_options(token_id):
+<<<<<<< HEAD
      #token_id = "hi" #request.headers.get('x-token')
      return ''
 
@@ -143,6 +144,35 @@ def staff_options(token_id):
      #token_id = "hi" #request.headers.get('x-token')
      return ''
 
+=======
+     #token_id = "hi" #request.headers.get('x-token')
+     return ''
+
+@app.route("/home/<token_id>/staff_management", methods = [ 'GET' ] )
+def staff_get(token_id):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          staff_init = staff_management(mongodb)
+          get_staff = staff_init.get()
+          if get_staff.get('success') == False:
+               message = json.dumps(get_staff.get('reason'))
+               flash(message)
+          #flash(get_staff.get('data'))
+          resp = render_template('staff_management.html', staff=get_staff.get('data'))
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+          flash(message)
+     return resp
+
+@app.route("/home/<token_id>/staff_management", methods = [ 'OPTIONS' ] )
+def staff_options(token_id):
+     #token_id = "hi" #request.headers.get('x-token')
+     return ''
+
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 @app.route("/home/<token_id>/staff_management", methods = [ 'POST' ] )
 def staff_add(token_id):
      token_init = token(mongodb)
@@ -171,7 +201,11 @@ def staff_add(token_id):
      return resp
 
 @app.route("/home/<token_id>/staff_management/<prof_init>", methods = [ 'GET' ] )
+<<<<<<< HEAD
 def profile_get_(token_id,prof_init):
+=======
+def profile_get(token_id,prof_init):
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
      token_init = token(mongodb)
      token_auth= token_init.token_validator(token_id)
 
@@ -183,6 +217,7 @@ def profile_get_(token_id,prof_init):
           if get_profile.get('success') == False:
                message = json.dumps(get_profile.get('reason'))
                flash(message)
+<<<<<<< HEAD
 
           sched_init = view_sched(mongodb)
           get_sched = sched_init.months()
@@ -244,6 +279,11 @@ def profile_del(token_id,prof_init):
                flash(message)
 
           resp = json.dumps(delete_staff, default=default_encoder)
+=======
+          # flash(get_profile.get('data'))
+          resp = render_template('profile.html', profile=get_profile.get('data'))
+          #resp = json.dumps(get_profile.get('data'), default=default_encoder)
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
@@ -251,6 +291,7 @@ def profile_del(token_id,prof_init):
      return resp
 
 
+<<<<<<< HEAD
 @app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'GET' ] )
 def profile_sched_get(token_id,prof_init):
      return ''
@@ -287,6 +328,28 @@ def profile_sched_post(token_id,prof_init):
           resp = redirect(url_for('log_in_get'))
 
      return resp
+=======
+# @app.route("home/<token_id>/staff_management/<initialsa>", methods = [ 'GET' ] )
+# def profile_get(token_id, initialsa):
+#      token_init = token(mongodb)
+#      token_auth= token_init.token_validator(token_id)
+
+#      if token_auth.get('success')==True:
+#           profile_init = profile(mongodb)
+#           get_profile = profile_init.get(initials)
+#           resp = json.dumps(get_profile.get('data'), default=default_encoder)
+
+#           if get_profile.get('success') == False:
+#                message = json.dumps(get_profile.get('reason'))
+#                flash(message)
+#           resp = render_template('profile.html', profile=profile.get('data'))
+
+#      else:
+#           message = json.dumps("Failed: %s" % token_auth.get('reason'))
+#           resp = redirect(url_for('log_in_get'))
+
+#      return resp
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 
 
 if __name__ == "__main__":

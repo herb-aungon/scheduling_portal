@@ -8,6 +8,7 @@
 <h3>Edit Detais for: {{ p.first_name }} {{ p.last_name }} <span class="glyphicon glyphicon-edit"> </span></h3>
 <!-- Text input-->
 
+<<<<<<< HEAD
     <div class="form-group">
       <label id="edit_area" class="control-label col-sm-2" for="id">ID:</label>
       <div class="col-sm-10">          
@@ -18,6 +19,41 @@
       <div class="col-sm-10">          
         <input type="text" class="form-control" id="initials" value="{{ p.initials }}">
       </div>
+=======
+<!-- Form Name -->
+<legend>Edit</legend>
+<form class="form-horizontal" role="form">
+
+{% for p in profile %}
+<!-- Text input-->
+
+    <div class="form-group">
+      <label id="edit_area" class="control-label col-sm-2" for="email">Initials:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="pwd" value="{{ p.initials }}">
+      </div>
+
+      <label class="control-label col-sm-2" for="email">First Name:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="pwd" value="{{ p.first_name }}">
+      </div>
+      <label class="control-label col-sm-2" for="email">Last Name:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="pwd"  value="{{ p.last_name }}">
+      </div>
+
+    </div>
+{% endfor %}
+
+<div class="form-group">
+  <div class="col-md-8">
+    <button id="button1id" name="button1id" class="btn btn-success">Good Button</button>
+    <button id="button2id" name="button2id" class="btn btn-danger">Scary Button</button>
+  </div>
+</div>
+
+</form>
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 
       <label class="control-label col-sm-2" for="first_name">First Name:</label>
       <div class="col-sm-10">          
@@ -99,8 +135,6 @@
 
 </fieldset>
 </form>
-
-
 
 
 {% endblock %}

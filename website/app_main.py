@@ -3,7 +3,11 @@
 
 from flask import Flask,request, render_template, flash, jsonify, make_response, Response, url_for, redirect
 from pymongo import MongoClient
+<<<<<<< HEAD
 import json, datetime, local_settings, calendar, collections
+=======
+import json, datetime, local_settings, calendar
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 from modules.sched_portal_objects import *
 
 config = local_settings.env
@@ -244,6 +248,7 @@ def profile_del(token_id,prof_init):
                flash(message)
 
           resp = json.dumps(delete_staff, default=default_encoder)
+<<<<<<< HEAD
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
@@ -282,6 +287,8 @@ def profile_sched_post(token_id,prof_init):
           
           resp =json.dumps(gen_month,default=default_encoder, indent=2, sort_keys =True)
           #resp = render_template('profile.html', dates = data)
+=======
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
@@ -289,6 +296,7 @@ def profile_sched_post(token_id,prof_init):
      return resp
 
 
+<<<<<<< HEAD
 @app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'PUT' ] )
 def profile_sched_pust(token_id,prof_init):
      token_init = token(mongodb)
@@ -318,6 +326,44 @@ def profile_sched_pust(token_id,prof_init):
      return resp
 
 
+=======
+@app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'GET' ] )
+def profile_sched_get(token_id,prof_init):
+     return ''
+
+@app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'OPTIONS' ] )
+def profile_sched_opts(token_id,prof_init):
+     return ''
+
+
+@app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'POST' ] )
+def profile_sched_post(token_id,prof_init):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          try:
+               payload = request.data
+               payload_json = json.loads(payload)
+          except Exception as e:
+               resp="Failed to load data!Reason: %s" % e
+               return json.dumps(resp)
+
+          gen_month_init = profile(mongodb)
+          gen_month = gen_month_init.gen_month(payload_json)
+
+          if gen_month.get('success') == False:
+               message = json.dumps(gen_month.get('reason'))
+               flash(message)
+          
+          resp =json.dumps(gen_month,default=default_encoder, indent=2)
+          #resp = render_template('profile.html', dates = data)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+
+     return resp
+>>>>>>> ad7490dfd9a87a3fced3cab506e2d9957553110b
 
 
 if __name__ == "__main__":
