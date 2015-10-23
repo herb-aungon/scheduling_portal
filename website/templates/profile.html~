@@ -1,54 +1,45 @@
 {% extends "home.html" %}
 
-{% block staff_management %}
+{% block profile %}
    {{ super() }}
+<!-- Form Name -->
+<form class="form-horizontal" role="form">
+{% for p in profile %}
+<h3>Edit Detais for: {{ p.first_name }} {{ p.last_name }} <span class="glyphicon glyphicon-edit"> </span></h3>
+<!-- Text input-->
 
-    <form class="form-inline" role="form">
-      <legend>Add New Staff Member</legend>
-        <div class="form-group">
-            <label class="sr-only" for="inputinit">Initials</label>
-            <input type="text" class="form-control" id="initials" placeholder="enter initials" required />
-        </div>
-        <div class="form-group">
-            <label class="sr-only" for="input_first">First Name</label>
-            <input type="text" class="form-control" id="first_name" placeholder="enter firstname" required />
-        </div>
-        <div class="form-group">
-            <label class="sr-only" for="input_last">Last Name</label>
-            <input type="test" class="form-control" id="last_name" placeholder="enter lastname" required />
-        </div>
-	<button id="input_submit" name="input_submit" class="btn btn-success">Submit</button>
-	<button id="reset" name="" class="btn btn-danger">Reset</button>
-    </form>
-    <br>
+    <div class="form-group">
+      <label id="edit_area" class="control-label col-sm-2" for="id">ID:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="_id" value="{{ p._id }}" disabled>
+      </div>
 
+      <label id="edit_area" class="control-label col-sm-2" for="initials">Initials:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="initials" value="{{ p.initials }}">
+      </div>
 
-   <table class="table table-hover" id="staff_table">
-     <thead>
-       <tr>
-         <th>Initials</th>
-         <th>First Name</th>
-         <th>Surname</th>
-	 <th>Action</th>
-       </tr>
-     </thead>
-     <tbody>
-       {% for member in staff %}
-       <tr id="{{ member.last_name }}{{ member.initials }}">
-         <td>{{ member.initials }}</td>
-         <td>{{ member.first_name }}</td>
-         <td>{{ member.last_name }}</td>
-         <td>
-           <a href="#" class="nav nav-pills" role="presentation" id="manage_sched_{{ member.last_name }}{{ member.initials }}">View Details</a>
-         </td>
-       </tr>
-       {% endfor %}
-       
-     </tbody>
-   </table>
+      <label class="control-label col-sm-2" for="first_name">First Name:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="first_name" value="{{ p.first_name }}">
+      </div>
+      <label class="control-label col-sm-2" for="last_name">Last Name:</label>
+      <div class="col-sm-10">          
+        <input type="text" class="form-control" id="last_name"  value="{{ p.last_name }}">
+      </div>
 
+    </div>
+{% endfor %}
 
+<div class="form-group">
+  <div class="col-md-8">
+    <button id="update" class="btn btn-success"><span class="glyphicon glyphicon-ok"> Save</span></button>
+    <button id="reset2" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"> Reset</span></button>
+    <button id="delete" class="btn btn-danger"><span class=" glyphicon glyphicon-remove"> Delete</span></button>
+  </div>
+</div>
 
+</form>
 
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -60,6 +51,54 @@
 {% endfor %}
 {% endif %}
 {% endwith %}
+
+</br>
+</br>
+
+
+<form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Add Schedule <span class="glyphicon glyphicon-plus"></span></legend>
+
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="select_month">Select Month:</label>
+
+  <div class="col-md-4">
+    <select id="select_month" name="months" class="form-control">
+    <option selected>Months</option> 
+	{% for month in months %}
+	<option value="{{ month }}">{{ month }}</option>
+	{% endfor %}
+    </select>
+
+  </div>
+
+</div>
+
+
+<div class="form-group" hidden id="date_picker">
+  <label class="col-md-4 control-label" for="select_month">Select Date:</label>
+
+  <div class="col-md-4">
+    <select id="select_month" name="months" class="form-control">
+    <option selected>Months</option> 
+    {% for date in datess %}
+    <option value="{{ date }}">{{ date }}</option>
+    {% endfor %}
+    </select>
+
+  </div>
+
+</div>
+
+
+
+
+</fieldset>
+</form>
 
 
 
