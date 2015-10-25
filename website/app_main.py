@@ -45,7 +45,7 @@ def internal_401_error( exception ):
 def default_encoder( obj, encoder=json.JSONEncoder() ):
     if isinstance( obj, ObjectId ): 
         return str( obj )  
-    if isinstance(obj, datetime):
+    if isinstance(obj, datetime.datetime):
         return obj.strftime( '%Y-%m-%d %H:%M:%S' )
     return encoder.default( obj )
 
@@ -103,10 +103,11 @@ def home_get(token_id):
      token_auth= token_init.token_validator(token_id)
 
      if token_auth.get('success')==True:
-          sched_init = view_sched(mongodb)
-          get_sched = sched_init.months()
-          #resp = json.dumps(get_sched.get('data'))
-          resp = render_template('monthly.html', months=get_sched.get('data'))
+          months_init = custom_calendar()
+          get_months = months_init.list_months()
+          months = get_months.get('data')
+          #collections.OrderedDict(sorted(months.items()))
+          resp = render_template('monthly.html', months=months)
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
@@ -184,10 +185,11 @@ def profile_get_(token_id,prof_init):
                message = json.dumps(get_profile.get('reason'))
                flash(message)
 
-          sched_init = view_sched(mongodb)
-          get_sched = sched_init.months()
+          months_init = custom_calendar()
+          get_months = months_init.list_months()
+          months = get_months.get('data')
 
-          resp = render_template('profile.html', profile=get_profile.get('data'), months = get_sched.get('data'))
+          resp = render_template('profile.html', profile=get_profile.get('data'), months = months)
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
@@ -253,6 +255,25 @@ def profile_del(token_id,prof_init):
 
 @app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'GET' ] )
 def profile_sched_get(token_id,prof_init):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          sched_init = schedule(mongodb)
+          get_sched = sched_init.get(prof_init)
+
+          if get_sched.get('success') == False:
+               message = json.dumps(get_sched.get('reason'))
+               flash(message)
+          
+          data =json.dumps(get_sched,default=default_encoder, indent=2, sort_keys =True)
+          resp = render_template('profile.html', schedules = data)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+
+     return resp
+
      return ''
 
 @app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'OPTIONS' ] )

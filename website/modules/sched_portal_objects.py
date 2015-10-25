@@ -1,6 +1,31 @@
 import  pprint, dpath.util, requests, datetime, json, bson, copy, calendar, collections
 from bson.objectid import ObjectId
 
+class custom_calendar( ):
+    def __init__(self):
+        self.__result = {'success':False, 'reason':None, 'data':None}
+        self.__now = datetime.datetime.now()        
+
+    def list_months(self):
+        months=[]
+        months_dict={}
+        try:
+            for month in range(1,13):
+                months_dict.update( { datetime.date(self.__now.year,month,1 ).strftime('%B'):month } )
+                months.append(datetime.date(self.__now.year,month,1 ).strftime('%B') )
+
+            self.__result['success']=True
+            self.__result['reason']="Months List Generated"
+            self.__result['data']= months
+            self.__result['data_2']= months_dict
+
+        except Exception as e:
+            self.__result['reason']="Failed to Generate Months List!Reason %s " % e
+
+        return self.__result
+
+
+
 class user( ):
     def __init__( self, mongodb ):
         self.__mongodb = mongodb
@@ -232,20 +257,9 @@ class profile( ):
             if len(data.get('month')) == 0:
                 self.__result['reason']="Failed to add!Initials cannot be empty"
             else:
-                months_int = {
-                    "January":1, 
-                    "February":2, 
-                    "March":3, 
-                    "April":4, 
-                    "May":5, 
-                    "June":6, 
-                    "July":7, 
-                    "August":8, 
-                    "September":9, 
-                    "October":10, 
-                    "November":11, 
-                    "December":12
-                }
+                months_init = custom_calendar()
+                get_months = months_init.list_months()
+                months_int = get_months.get('data_2')
                 month = data.get('month')
                 number_days =calendar.monthrange(self.__now.year, months_int.get(month) )[1]
                 date ={}
@@ -253,7 +267,6 @@ class profile( ):
                     date_raw = datetime.date(self.__now.year,months_int.get(month),days )
                     day=date_raw.strftime('%A')
                     date.update({str(date_raw):day})
-                #collections.OrderedDict(date)
 
                 self.__result['success']=True
                 self.__result['reason']="Dates for selected month generated"
@@ -266,26 +279,55 @@ class profile( ):
 
 
 
-
 class schedule( ):
     def __init__(self, mongodb):
         self.__mongodb = mongodb
         self.__result = {'success':False, 'reason':None, 'data':None}
         self.__now = datetime.datetime.now()        
     
-
-
     def create(self, data):
+        try:
+            date_raw = data.get('date')
+            date_fragments = date_raw.split(":")
 
-        date_raw = data.get('date')
-        date_fragments = date_raw.split(":")
 
-        sched={
-            "date":date_fragments[0],
-            "day":date_fragments[1],
-            "pseudo_name":data.get('pseudo_name'),
-            "from":data.get('from'),
-            "to":data.get('to'),
-        }
-        self.__result['data']=sched
+            #datetime.datetime.now().strptime('%Y-%m-%d %H:%M:%S')
+            sched={
+                "date":datetime.datetime.strptime(date_fragments[0],'%Y-%m-%d' ),
+                "day":date_fragments[1],
+                "initials":data.get('initials'),
+                "from":data.get('from'),
+                "to":data.get('to'),
+                "date_created":self.__now
+            }
+            
+            self.__mongodb.schedule.insert(sched)
+
+            self.__result['reason']="Schedule created for %s" % data.get('initials')
+            self.__result['success']=True
+            
+        except Exception as e:
+            self.__result['reason']="Failed to create schedule for %s!Reason:%s" % (data.get('initials'), e)
+
+        return self.__result
+
+    def get(self, initials):
+        try:
+            get_sched_raw = self.__mongodb.schedule.find({'initials':initials})
+            get_sched = {}
+            key_frag = 0
+            for sched in get_sched_raw:
+                key_frag +=1
+                get_sched.update({key_frag:sched})
+
+
+            if len(get_sched)==0:
+                self.__result['reason']="No Schedule Found for %s" % initials
+            else:
+                self.__result['reason']="Schedule Found for %s" % initials
+                self.__result['success']=True
+                self.__result['data']=get_sched
+        except Exception as e:
+            self.__result['reason']="Unable to find schedule for %s!Reason:%s" % (initials, e)
+            
         return self.__result

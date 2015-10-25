@@ -55,86 +55,90 @@
 </br>
 </br>
 
-
+<div class="form_add">
 <form class="form-horizontal">
 <fieldset>
 
 
 <legend>Add Schedule <span class="glyphicon glyphicon-plus"></span></legend>
 
-<!-- Select Month -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="select_month">Select Month:</label>
+  <div class="col-md-10">
 
-  <div class="col-md-4">
-    <select id="select_month" name="months" class="form-control">
-    <option selected>Months</option> 
+    <select id="select_month" name="month" class="add_sched">
+      <option selected>Select Month</option>
 	{% for month in months %}
 	<option value="{{ month }}">{{ month }}</option>
 	{% endfor %}
     </select>
 
-  </div>
-
-</div>
-
-<!-- Select date -->
-<div class="form-group" hidden id="date_picker">
-  <label class="col-md-4 control-label" for="select_month">Select Date:</label>
-
-  <div class="col-md-4">
-    <select id="select_date" name="date" class="form-control">
-    <option selected>View Dates</option> 
+    <select id="select_date" name="date" class="add_sched" disabled>
+    <option selected>Select Date</option> 
     {% for date in datess %}
     <option value="{{ date }}">{{ date }}</option>
     {% endfor %}
     </select>
 
-  </div>
-
-</div>
-
-<!-- Select time from -->
-<div class="form-group" hidden id="time_picker_from">
-  <label class="col-md-4 control-label" for="select_time">From:</label>
-
-  <div class="col-md-4">
-    <select id="time_from" name="date" class="form-control">
-    <option selected>Select Time From</option> 
-    <option value="1:00">1:00</option>
+    <select id="time_from" name="date" class="add_sched" disabled>
+    <option selected>Start Time</option> 
     </select>
 
-  </div>
-
-</div>
-
-
-<!-- Select time from -->
-<div class="form-group" hidden id="time_picker_to">
-  <label class="col-md-4 control-label" for="select_time">To:</label>
-
-  <div class="col-md-4">
-    <select id="time_to" name="date" class="form-control">
-    <option selected>Select Time To</option> 
-    <option value="1:00">1:00</option>
+    <select id="time_to" name="date" class="add_sched" disabled>
+    <option selected>Finish Time</option> 
     </select>
+    </br>
+    </br>
+
+    <button id="create_schedule" class="btn btn-success"><span class="glyphicon glyphicon-ok"> Create</span></button>
+    <button id="reset_sched_form" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"> Reset</span></button>
+
+
 
   </div>
 
-</div>
 
-<div class="form-group" hidden id="sched_btn">
-  <div class="col-md-8">
-    <button id="create_schedule" class="btn btn-success"><span class="glyphicon glyphicon-ok">Create</span></button>
-    <button id="reset_sched_form" class="btn btn-warning"><span class="glyphicon glyphicon-refresh">Reset</span></button>
-  </div>
-</div>
+<!-- <div class="form-group" id="sched_btn"> -->
+<!--   <div class="col-md-8"> -->
+<!--   </div> -->
+<!-- </div> -->
 
 
 </fieldset>
 </form>
 
+</div>
+
+</br>
+</br>
+
+{% if schedules %}
+<div class="schedule_tbl"
+<div class="page-header">
+<h3>Current Schedule <span class="glyphicon glyphicon-list-alt"></span></h3>
+</div>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Initals</th>
+      <th>Date</th>
+      <th>Start-End</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="">
+      <td>dada</td>
+      <td>some date</td>
+      <td>
+        <a href="#" class="nav nav-pills" role="presentation" id="">View Schedule</a>
+      </td>
+    </tr>
+    
+    
+  </tbody>
+</table>
 
 
+</div>
+{% endif %}
 
 {% endblock %}

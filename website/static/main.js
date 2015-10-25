@@ -160,7 +160,7 @@ $("#delete").click(function() {
 });
 
 
-$('select').on('change', function() {
+$('#select_month').on('change', function() {
     $("#date_picker").show();
     var json_month = {}
     json_month["month"] = document.getElementById("select_month").value;
@@ -191,6 +191,7 @@ $('select').on('change', function() {
 
     //disable dropdown or select month once selected
     $("#select_month").prop("disabled", true);
+    $("#select_date").prop("disabled", false);
 
     //write response data from ajax to dropdown list
     $.each(data, function( index, value ) {
@@ -202,9 +203,8 @@ $('select').on('change', function() {
 });
 
 $('#select_date').on('change', function() {
-    $("#time_picker_from").show();
-    $("#time_picker_to").show();
-    $("#sched_btn").show();
+    $("#time_from").prop("disabled", false);
+    $("#time_to").prop("disabled", false);
     console.log(data);
     for (hours =1; hours < 25; hours++) {
         var time = hours + ":00";
@@ -216,14 +216,13 @@ $('#select_date').on('change', function() {
 });
 
 $("#create_schedule").click(function() {
+    var get_sched=0;
     var init=document.getElementById("initials").value;
-    var first=document.getElementById("first_name").value;
-    var last=document.getElementById("last_name").value;
     var sched_raw = {}
     sched_raw["date"] = document.getElementById("select_date").value;
     sched_raw["from"] = document.getElementById("time_from").value;
     sched_raw["to"] = document.getElementById("time_to").value;
-    sched_raw["pseudo_name"] = first + " " + last + "-" + init;
+    sched_raw["initials"] = init;
     var sched= JSON.stringify(sched_raw);
     console.log(sched);
 
@@ -246,6 +245,20 @@ $("#create_schedule").click(function() {
         },
         async: false
     });
+
+    $.ajax({
+        type : "GET",
+        url : add_sched_url,
+        contentType: 'application/json;charset=UTF-8',
+        success: function(result) {
+            console.log(result);
+            json_result = JSON.parse(result);
+            get_sched = json_result['data'];
+
+        },
+        async: false
+    });
+    
 
 });
 
