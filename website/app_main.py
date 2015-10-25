@@ -46,7 +46,8 @@ def default_encoder( obj, encoder=json.JSONEncoder() ):
     if isinstance( obj, ObjectId ): 
         return str( obj )  
     if isinstance(obj, datetime.datetime):
-        return obj.strftime( '%Y-%m-%d %H:%M:%S' )
+         date = datetime.date(obj.year, obj.month, obj.day)
+         return str(date)#.strftime( '%Y-%m-%d' )
     return encoder.default( obj )
 
 
@@ -107,7 +108,7 @@ def home_get(token_id):
           get_months = months_init.list_months()
           months = get_months.get('data')
           #collections.OrderedDict(sorted(months.items()))
-          resp = render_template('monthly.html', months=months)
+          resp = render_template('list_months.html', months=months)
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
@@ -189,7 +190,11 @@ def profile_get_(token_id,prof_init):
           get_months = months_init.list_months()
           months = get_months.get('data')
 
-          resp = render_template('profile.html', profile=get_profile.get('data'), months = months)
+
+          sched_init = schedule(mongodb)
+          get_sched = sched_init.get(prof_init)
+
+          resp = render_template('profile.html', profile=get_profile.get('data'), months = months, schedules = get_sched.get('data'))
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
@@ -255,25 +260,6 @@ def profile_del(token_id,prof_init):
 
 @app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'GET' ] )
 def profile_sched_get(token_id,prof_init):
-     token_init = token(mongodb)
-     token_auth= token_init.token_validator(token_id)
-
-     if token_auth.get('success')==True:
-          sched_init = schedule(mongodb)
-          get_sched = sched_init.get(prof_init)
-
-          if get_sched.get('success') == False:
-               message = json.dumps(get_sched.get('reason'))
-               flash(message)
-          
-          data =json.dumps(get_sched,default=default_encoder, indent=2, sort_keys =True)
-          resp = render_template('profile.html', schedules = data)
-     else:
-          message = json.dumps("Failed: %s" % token_auth.get('reason'))
-          resp = redirect(url_for('log_in_get'))
-
-     return resp
-
      return ''
 
 @app.route("/home/<token_id>/staff_management/<prof_init>/create_sched", methods = [ 'OPTIONS' ] )
@@ -337,6 +323,60 @@ def profile_sched_pust(token_id,prof_init):
           resp = redirect(url_for('log_in_get'))
 
      return resp
+
+
+@app.route("/home/<token_id>/staff_management/<prof_init>/<sched_id>", methods = [ 'DELETE' ] )
+def profile_edit_sched_get(token_id,prof_init,sched_id):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          data = {
+               "initials":prof_init,
+               "id":sched_id,
+          }
+          sched_init = schedule(mongodb)
+          del_sched = sched_init.delete(data)
+
+          if del_sched.get('success') == False:
+               message = json.dumps(del_sched.get('reason'))
+               flash(message)
+          
+          resp = json.dumps(del_sched, indent=2)#render_template('edit_schedule.html', result=del_sched)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+
+     return resp
+
+
+@app.route("/home/<token_id>/staff_management/<prof_init>/<sched_id>", methods = [ 'OPTIONS' ] )
+def profile_edit_sched_options(token_id,prof_init,sched_id):
+     return ''
+
+
+@app.route("/home/<token_id>/view_schedule/<month>", methods = [ 'GET' ] )
+def monthly_sched_get(token_id, month):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          sched_init = schedule(mongodb)
+          monthly_sched = sched_init.monthly(month)
+
+          if monthly_sched.get('success') == False:
+               message = json.dumps(monthly_sched.get('reason'))
+               flash(message)
+          
+          resp = render_template('view_schedule.html', monthly_schedules = monthly_sched.get('data'))#render_template('edit_schedule.html', result=monthly_sched)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+
+     return resp
+
+
+
 
 
 

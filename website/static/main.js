@@ -1,11 +1,10 @@
 var url = "http://192.168.1.69/"
 var current_url = window.location.href
 var data = []
+var sched_url;
+var initials;
 $( document ).ready(function() {
-    if(localStorage.getItem("user")){
-    var elem = document.getElementById("logout");
-    elem.value = localStorage.getItem("user");
-    }
+    initials=document.getElementById("initials").value;
 });
 
 
@@ -88,14 +87,6 @@ $(".view_profile").click(function () {
 });
 
 
-$(".view_t").click(function () {
-    var id = $(this).attr("id");
-    var token = localStorage.getItem("token");
-    var current = window.location.href + "/" + id;
-    console.log(current);
-    window.location.replace(current);
-});
-
 
 $("#reset2").click(function() {
     history.go(0)
@@ -154,12 +145,6 @@ $("#delete").click(function() {
 });
 
 
-$("#delete").click(function() {
-    window.location.href = url;
-
-});
-
-
 $('#select_month').on('change', function() {
     $("#date_picker").show();
     var json_month = {}
@@ -206,6 +191,7 @@ $('#select_date').on('change', function() {
     $("#time_from").prop("disabled", false);
     $("#time_to").prop("disabled", false);
     console.log(data);
+
     for (hours =1; hours < 25; hours++) {
         var time = hours + ":00";
 	//console.log(time);
@@ -218,16 +204,20 @@ $('#select_date').on('change', function() {
 $("#create_schedule").click(function() {
     var get_sched=0;
     var init=document.getElementById("initials").value;
+    var full_name=document.getElementById("first_name").value + document.getElementById("last_name").value;
     var sched_raw = {}
     sched_raw["date"] = document.getElementById("select_date").value;
     sched_raw["from"] = document.getElementById("time_from").value;
     sched_raw["to"] = document.getElementById("time_to").value;
     sched_raw["initials"] = init;
+    sched_raw["name"] = full_name;
+    sched_raw["month"] = document.getElementById("select_month").value;
     var sched= JSON.stringify(sched_raw);
     console.log(sched);
 
     var token = localStorage.getItem("token");
     var add_sched_url = url + "home/" + token + "/staff_management/" + init + "/create_sched"
+    url_sched = url + "home/" + token + "/staff_management/" + init
     console.log(add_sched_url);
 
     // if (document.getElementById("time_from").value > document.getElementById("time_to").value) {
@@ -246,25 +236,49 @@ $("#create_schedule").click(function() {
         async: false
     });
 
-    $.ajax({
-        type : "GET",
-        url : add_sched_url,
-        contentType: 'application/json;charset=UTF-8',
-        success: function(result) {
-            console.log(result);
-            json_result = JSON.parse(result);
-            get_sched = json_result['data'];
 
-        },
-        async: false
-    });
-    
-
+    console.log(url_sched);
+    window.location.href = url_sched
+    location.reload(); 
 });
 
 
 $("#reset_sched_form").click(function() {
     history.go(0)
+});
+
+
+
+$(".delete_sched").click(function() {
+    var id = $(this).attr("id");
+    console.log(id)
+    var token = localStorage.getItem("token");
+    var del_sched_url = url + "home/" + token + "/staff_management/" + initials + '/'+ id
+
+
+    console.log(del_sched_url);
+
+    $.ajax({
+        type : "DELETE",
+        url : del_sched_url,
+        contentType: 'application/json;charset=UTF-8',
+        success: function(result) {
+            console.log(result);
+        },
+        async: false
+    });
+
+    history.go(0)
+
+});
+
+$(".view_sched_btn").click(function() {
+    var id = $(this).attr("id");
+    var token = localStorage.getItem("token");
+    var view_sched_url = url + "home/" + token + "/view_schedule/" + id
+    console.log(view_sched_url)
+    window.location.replace(view_sched_url);
+
 });
 
 

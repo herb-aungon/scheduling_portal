@@ -289,16 +289,18 @@ class schedule( ):
         try:
             date_raw = data.get('date')
             date_fragments = date_raw.split(":")
-
-
             #datetime.datetime.now().strptime('%Y-%m-%d %H:%M:%S')
+            start_date = "%s" % (date_fragments[0])
+            date_created = "%s-%s-%s %s:%s"%(self.__now.year, self.__now.month, self.__now.day, self.__now.hour, self.__now.minute)
             sched={
-                "date":datetime.datetime.strptime(date_fragments[0],'%Y-%m-%d' ),
+                "start_date":datetime.datetime.strptime(start_date,'%Y-%m-%d' ),
                 "day":date_fragments[1],
                 "initials":data.get('initials'),
                 "from":data.get('from'),
                 "to":data.get('to'),
-                "date_created":self.__now
+                "month":data.get('month'),
+                "name":data.get('name'),
+                "date_created":datetime.datetime.strptime(date_created,'%Y-%m-%d %H:%M' )
             }
             
             self.__mongodb.schedule.insert(sched)
@@ -314,11 +316,9 @@ class schedule( ):
     def get(self, initials):
         try:
             get_sched_raw = self.__mongodb.schedule.find({'initials':initials})
-            get_sched = {}
-            key_frag = 0
+            get_sched = []
             for sched in get_sched_raw:
-                key_frag +=1
-                get_sched.update({key_frag:sched})
+                get_sched.append(sched)
 
 
             if len(get_sched)==0:
@@ -329,5 +329,40 @@ class schedule( ):
                 self.__result['data']=get_sched
         except Exception as e:
             self.__result['reason']="Unable to find schedule for %s!Reason:%s" % (initials, e)
+            
+        return self.__result
+
+    def delete(self, data):
+        try:
+            initials = data.get('initials')
+            sched_id = data.get('id')
+            self.__mongodb.schedule.remove( {"_id": ObjectId(sched_id) } )
+
+            self.__result['reason']="Schedule for %s(%s) has been deleted" % (initials, sched_id)
+            self.__result['success']=True
+
+        except Exception as e:
+            self.__result['reason']="Unable to delete schedule for %s(%s)!Reason:%s" % (initials, sched_id, e)
+            
+        return self.__result
+
+
+    def monthly(self, month):
+        try:
+            monthly_sched_raw = self.__mongodb.schedule.find({'month':month}).sort("start_date", 1)
+            monthly_sched = []
+            for sched in monthly_sched_raw:
+                monthly_sched.append(sched)
+
+
+            if len(monthly_sched)==0:
+                self.__result['reason']="No Schedule Found for %s" % month
+            else:
+                self.__result['reason']="Schedule Found for %s" % month
+                self.__result['success']=True
+                self.__result['test']=len(monthly_sched)
+                self.__result['data']=monthly_sched
+        except Exception as e:
+            self.__result['reason']="Unable to find schedule for %s month!Reason:%s" % (month, e)
             
         return self.__result

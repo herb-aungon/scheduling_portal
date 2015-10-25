@@ -1,0 +1,34 @@
+]{% if schedules %}
+
+<legend>Current Schedule<span class="glyphicon glyphicon-plus"> </span></legend>
+
+     <table class="table table-hover" id="current_sched">
+       <thead>
+	 <tr>
+	   <th>Start Date(YYYY-MM-DD)</th>
+	   <th>Work Day</th>
+	   <th>Start-End</th>
+	   <th>Date Created</th>
+	   <th>Action</th>
+	 </tr>
+       </thead>
+       <tbody>
+	 {% for sched in schedules %}
+	 <tr id="{{ sched._id }}">
+	   <td>{{ sched.start_date }}</td>
+	   <td>{{ sched.day }}</td>
+	   <td>{{ sched.from }}-{{ sched.to }}</td>
+	   <td>{{ sched.date_created }}</td>
+	   <td>
+           <button id="{{ sched._id }}" class="delete_sched">Delete</button>
+	   </td>
+	 </tr>
+	 {% endfor %}
+
+       </tbody>
+     </table>
+
+</div>
+{% endif %}
+
+

@@ -1,0 +1,97 @@
+{% extends "home.html" %}
+
+
+{% block view_schedule %}
+   {{ super() }}
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger">
+  <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong> <a>{{ message }}</a></strong>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<legend><span class="glyphicon glyphicon-th"> Monthly View</span></legend>
+
+{% if monthly_schedules %}
+
+	    <table class="table table-hover">
+	      <thead>
+		<tr>
+		  <th>Initials</th>
+		  <th>Monday</th>
+		  <th>Tuesday</th>
+		  <th>Wednesday</th>
+		  <th>Thursday</th>
+		  <th>Friday</th>
+		  <th>Saturday</th>
+		  <th>Sunday</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		{% for sched in monthly_schedules %}
+
+		{% set day = sched.day  %}
+		{% set date = sched.start_date  %}
+
+		<tr id="{{ sched.initials }}">
+		  <td>{{ sched.name}}({{ sched.initials }})</td>
+
+		  {% if "Monday" in day  %}
+		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  {% else  %}
+		  <td bgcolor="#FFFF00">OFF</td>
+		  {% endif %}
+
+		  {% if "Tuesday" in day %}
+		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  {% else  %}
+		  <td bgcolor="#FFFF00">OFF</td>
+		  {% endif %}
+
+
+		  {% if "Wednesday" in day  %}
+		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  {% else  %}
+		  <td bgcolor="#FFFF00">OFF</td>
+		  {% endif %}
+
+		  {% if "Thursday" in day %}
+		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  {% else  %}
+		  <td bgcolor="#FFFF00">OFF</td>
+		  {% endif %}
+
+
+		  {% if "Friday" in day %}
+		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  {% else  %}
+		  <td bgcolor="#FFFF00">OFF</td>
+		  {% endif %}
+
+
+		  {% if "Saturday" in day %}
+		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  {% else  %}
+		  <td bgcolor="#FFFF00">OFF</td>
+		  {% endif %}
+
+		  {% if "Sunday" in day %}
+		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  {% else  %}
+		  <td bgcolor="#FFFF00">OFF</td>
+		  {% endif %}
+
+		</tr>		
+		{% endfor %}
+
+	      </tbody>
+	    </table>
+
+{% endif %}
+{% endblock %}

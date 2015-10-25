@@ -1,0 +1,27 @@
+{% extends "home.html" %}
+
+{% block staff_management %}
+   {{ super() }}
+	    <table class="table table-hover">
+	      <thead>
+		<tr>
+		  <th>Month</th>
+		  <th>Last Updated</th>
+		  <th>Action</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		{% for month in months %}
+		<tr id="{{ month }}">
+		  <td>{{ month }}</td>
+		  <td>some date</td>
+		  <td>
+		    <button id="{{ month }}" name="input_submit" class="view_sched_btn"><span class="glyphicon glyphicon-calendar">View Schedule</span></button>
+		  </td>		  
+		</tr>		
+		{% endfor %}
+
+	      </tbody>
+	    </table>
+
+{% endblock %}

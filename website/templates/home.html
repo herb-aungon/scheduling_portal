@@ -47,9 +47,11 @@
 	<div style="background:transparent !important" class="jumbotron">
 
 
-	    {% block monthly %}{% endblock %}  
+	    {% block list_months %}{% endblock %}  
+	    {% block view_schedule %}{% endblock %}  
 	    {% block staff_management %}{% endblock %}
 	    {% block profile %}{% endblock %}
+	    {% include 'schedule.html' %}
 	    {% block export_sched %}{% endblock %}
 	  </div>
 
