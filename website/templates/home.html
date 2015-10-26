@@ -14,7 +14,7 @@
 
 
 
-    <title>Scheduler</title>
+    <title>Scheduling Portal</title>
     <!-- Bootstrap core CSS -->
     <link href="{{url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
     <!-- Custom styles for this template -->
@@ -30,19 +30,28 @@
       <div class="container">
 
 	<ul class="nav nav-tabs">
-	  <li role="presentation" class="active"><a  id="home" href="#">Scheduling Portal</a></li>
+	  <li role="presentation" ><a  id="home" href="#">Scheduling Portal</a></li>
 	  <li role="presentation" ><a id="staff" href="#">Staff Management</a></li>
 	  <li role="presentation" ><a id="export" href="#">Export Schedule</a></li>
 
-	  <div class="btn-group">
-            <button type="button" class="btn btn-default" id="logout">
-              <span class="glyphicon glyphicon-log-out">Logout<!-- Logout:<input type="button" value="Logout:" id="logout_value"> --></span>
+	  <div class="btn-group" style="float: right;">
+            <button type="button" class="btn btn-default" id="logout" >
+              <span class="glyphicon glyphicon-log-out"></span>
+	      Logout
+	      <span class="sr-only">Logout Button</span>
             </button>
-
-
 	  </div>
 
 	</ul>
+
+	<div class="back_btn">
+          <button type="button" class="btn btn-default" id="back" style="float: left;">
+              <span class="glyphicon glyphicon-triangle-left"></span>
+	      <span class="sr-only">Back Button</span>
+	      Back
+            </button>
+	</div>
+
 
 	<div style="background:transparent !important" class="jumbotron">
 
@@ -51,19 +60,20 @@
 	    {% block view_schedule %}{% endblock %}  
 	    {% block staff_management %}{% endblock %}
 	    {% block profile %}{% endblock %}
-	    {% include 'schedule.html' %}
+	    {% include 'staff_schedule.html' %}
 	    {% block export_sched %}{% endblock %}
-	  </div>
-
-	</div>	
 
 
-    <footer class="footer">
+
+	</div>
+
+
+
+      <footer class="footer">
       <div class="container">
 	<p class="text-muted">&copy; Herbert Aungon 2014</p>
       </div>
     </footer>
-
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="{{url_for('static', filename='bootstrap.min.js') }}"></script>

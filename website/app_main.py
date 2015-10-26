@@ -104,9 +104,14 @@ def home_get(token_id):
      token_auth= token_init.token_validator(token_id)
 
      if token_auth.get('success')==True:
-          months_init = custom_calendar()
+          months_init = custom_calendar(mongodb)
           get_months = months_init.list_months()
           months = get_months.get('data')
+
+          if get_months.get('success') == False:
+               message = json.dumps(get_months.get('reason'))
+               flash(message)
+
           #collections.OrderedDict(sorted(months.items()))
           resp = render_template('list_months.html', months=months)
      else:
@@ -186,10 +191,9 @@ def profile_get_(token_id,prof_init):
                message = json.dumps(get_profile.get('reason'))
                flash(message)
 
-          months_init = custom_calendar()
+          months_init = custom_calendar(mongodb)
           get_months = months_init.list_months()
           months = get_months.get('data')
-
 
           sched_init = schedule(mongodb)
           get_sched = sched_init.get(prof_init)

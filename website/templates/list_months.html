@@ -2,6 +2,19 @@
 
 {% block staff_management %}
    {{ super() }}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger">
+  <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong> <a>{{ message }}</a></strong>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
 	    <table class="table table-hover">
 	      <thead>
 		<tr>
@@ -11,15 +24,21 @@
 		</tr>
 	      </thead>
 	      <tbody>
-		{% for month in months %}
-		<tr id="{{ month }}">
-		  <td>{{ month }}</td>
-		  <td>some date</td>
+		{% if months %}
+		{% for m in months %}
+		<tr id="{{ m.month }}">
+		  <td>{{ m.month }}</td>
+		  <td>{{ m.last_updated }}</td>
 		  <td>
-		    <button id="{{ month }}" name="input_submit" class="view_sched_btn"><span class="glyphicon glyphicon-calendar">View Schedule</span></button>
+		    <button id="{{ m.month }}" class="view_sched_btn"><span class="glyphicon glyphicon-calendar"></span>
+		      View Schedule
+		      <span class="sr-only">View Schedule Button</span>
+		    </button>
 		  </td>		  
 		</tr>		
 		{% endfor %}
+		{% endif %}
+
 
 	      </tbody>
 	    </table>

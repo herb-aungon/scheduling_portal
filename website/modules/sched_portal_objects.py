@@ -2,22 +2,23 @@ import  pprint, dpath.util, requests, datetime, json, bson, copy, calendar, coll
 from bson.objectid import ObjectId
 
 class custom_calendar( ):
-    def __init__(self):
+    def __init__(self, mongodb):
+        self.__mongodb = mongodb
         self.__result = {'success':False, 'reason':None, 'data':None}
         self.__now = datetime.datetime.now()        
 
     def list_months(self):
+        months_raw = self.__mongodb.month.find({},{'_id':0})#.sort("month_numb", 1)
         months=[]
-        months_dict={}
         try:
-            for month in range(1,13):
-                months_dict.update( { datetime.date(self.__now.year,month,1 ).strftime('%B'):month } )
-                months.append(datetime.date(self.__now.year,month,1 ).strftime('%B') )
+            for month in months_raw:
+                months.append(month)
 
             self.__result['success']=True
             self.__result['reason']="Months List Generated"
             self.__result['data']= months
-            self.__result['data_2']= months_dict
+
+
 
         except Exception as e:
             self.__result['reason']="Failed to Generate Months List!Reason %s " % e
@@ -186,10 +187,6 @@ class staff_management( ):
             
         return self.__result
 
-
-
-
-
 class profile( ):
     def __init__(self, mongodb):
         self.__mongodb = mongodb
@@ -257,22 +254,26 @@ class profile( ):
             if len(data.get('month')) == 0:
                 self.__result['reason']="Failed to add!Initials cannot be empty"
             else:
-                months_init = custom_calendar()
+                months_init = custom_calendar(self.__mongodb)
                 get_months = months_init.list_months()
-                months_int = get_months.get('data_2')
+                months_raw = get_months.get('data')
+                months={}
+                for m in months_raw:
+                    months.update( { m.get('month'):m.get('month_number') } )
+
                 month = data.get('month')
-                number_days =calendar.monthrange(self.__now.year, months_int.get(month) )[1]
+                number_days =calendar.monthrange(self.__now.year, months.get(month) )[1]
                 date ={}
                 for days in range(1,int(number_days)+1):
-                    date_raw = datetime.date(self.__now.year,months_int.get(month),days )
+                    date_raw = datetime.date(self.__now.year,months.get(month),days )
                     day=date_raw.strftime('%A')
                     date.update({str(date_raw):day})
-
+                    #date.update({"test":day})
                 self.__result['success']=True
                 self.__result['reason']="Dates for selected month generated"
                 self.__result['data']=date
         except Exception as e:
-            self.__result['reason']="Failed! %s" % e
+            self.__result['reason']="Failed to Generate Dates for %s! %s" % ("data.get('month')", e)
 
             
         return self.__result
@@ -287,9 +288,10 @@ class schedule( ):
     
     def create(self, data):
         try:
-            date_raw = data.get('date')
-            date_fragments = date_raw.split(":")
-            #datetime.datetime.now().strptime('%Y-%m-%d %H:%M:%S')
+            date_fragments = data.get('date').split(":")
+            from_fragments = data.get('from').split(":")
+            to_fragments = data.get('to').split(":")
+            total_hours = int(to_fragments[0]) - int(from_fragments[0])
             start_date = "%s" % (date_fragments[0])
             date_created = "%s-%s-%s %s:%s"%(self.__now.year, self.__now.month, self.__now.day, self.__now.hour, self.__now.minute)
             sched={
@@ -300,10 +302,13 @@ class schedule( ):
                 "to":data.get('to'),
                 "month":data.get('month'),
                 "name":data.get('name'),
+                "assignment":data.get('assignment'),
+                "total_hours":total_hours,
                 "date_created":datetime.datetime.strptime(date_created,'%Y-%m-%d %H:%M' )
             }
             
             self.__mongodb.schedule.insert(sched)
+            self.__mongodb.month.update( { "month":data.get('month') }, { '$set':{ "last_updated" : date_created } } )
 
             self.__result['reason']="Schedule created for %s" % data.get('initials')
             self.__result['success']=True
@@ -360,7 +365,6 @@ class schedule( ):
             else:
                 self.__result['reason']="Schedule Found for %s" % month
                 self.__result['success']=True
-                self.__result['test']=len(monthly_sched)
                 self.__result['data']=monthly_sched
         except Exception as e:
             self.__result['reason']="Unable to find schedule for %s month!Reason:%s" % (month, e)

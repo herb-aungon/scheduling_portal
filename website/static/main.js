@@ -167,16 +167,18 @@ $('#select_month').on('change', function() {
             console.log(result);
             json_result = JSON.parse(result);
             data_ = json_result['data'];
-            //console.log(data);
+            console.log(data_);
 	    //localStorage.setItem("data", data);
 	    data = data_
         },
         async: false
     });
 
-    //disable dropdown or select month once selected
+    //disable dropdown once selected
     $("#select_month").prop("disabled", true);
+    //enable dropdown once selected
     $("#select_date").prop("disabled", false);
+    $("#assignment").prop("disabled", false);
 
     //write response data from ajax to dropdown list
     $.each(data, function( index, value ) {
@@ -212,6 +214,7 @@ $("#create_schedule").click(function() {
     sched_raw["initials"] = init;
     sched_raw["name"] = full_name;
     sched_raw["month"] = document.getElementById("select_month").value;
+    sched_raw["assignment"] = document.getElementById("assignment").value;
     var sched= JSON.stringify(sched_raw);
     console.log(sched);
 
@@ -274,11 +277,23 @@ $(".delete_sched").click(function() {
 
 $(".view_sched_btn").click(function() {
     var id = $(this).attr("id");
+    console.log(id);
     var token = localStorage.getItem("token");
     var view_sched_url = url + "home/" + token + "/view_schedule/" + id
     console.log(view_sched_url)
     window.location.replace(view_sched_url);
 
+});
+
+$("#back").click(function() {
+    window.history.back();
+});
+
+
+
+$('ul.nav > li').click(function(){
+    $(this).children('a').toggleClass('active');
+    $(this).siblings('li').children('a').removeClass('active');
 });
 
 

@@ -12,20 +12,24 @@
       <label id="edit_area" class="control-label col-sm-2" for="id">ID:</label>
       <div class="col-sm-10">          
         <input type="text" class="form-control" id="_id" value="{{ p._id }}" disabled>
+            <span class="sr-only">ID</span>
       </div>
 
       <label id="edit_area" class="control-label col-sm-2" for="initials">Initials:</label>
       <div class="col-sm-10">          
         <input type="text" class="form-control" id="initials" value="{{ p.initials }}">
+            <span class="sr-only">Edit Initials</span>
       </div>
 
       <label class="control-label col-sm-2" for="first_name">First Name:</label>
       <div class="col-sm-10">          
         <input type="text" class="form-control" id="first_name" value="{{ p.first_name }}">
+            <span class="sr-only">Edit First Name</span>
       </div>
       <label class="control-label col-sm-2" for="last_name">Last Name:</label>
       <div class="col-sm-10">          
         <input type="text" class="form-control" id="last_name"  value="{{ p.last_name }}">
+        <span class="sr-only">Edit Last Name</span>
       </div>
 
     </div>
@@ -33,9 +37,18 @@
 
 <div class="form-group">
   <div class="col-md-8">
-    <button id="update" class="btn btn-success"><span class="glyphicon glyphicon-ok"> Save</span></button>
-    <button id="reset2" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"> Reset</span></button>
-    <button id="delete" class="btn btn-danger"><span class=" glyphicon glyphicon-remove"> Delete</span></button>
+    <button id="update" class="btn btn-success">
+      <span class="glyphicon glyphicon-ok"></span>
+      Save
+      <span class="sr-only">Save Button</span>
+    </button>
+
+    <button id="reset2" class="btn btn-warning">
+      <span class="glyphicon glyphicon-refresh"></span>
+      Reset
+      <span class="sr-only">Reset Button</span>
+    </button>
+
   </div>
 </div>
 
@@ -56,44 +69,60 @@
 </br>
 
 <div class="form_add">
-<form class="form-horizontal">
-<fieldset>
+  <form class="form-horizontal">
+    <fieldset>
 
 
-<legend>Add Schedule <span class="glyphicon glyphicon-plus"></span></legend>
+      <legend>Add Schedule <span class="glyphicon glyphicon-plus"></span></legend>
+      
+      <div class="col-md-14" id="test">
+	  <select id="select_month" name="month" class="add_sched">
+            <span class="sr-only">Drop Down for List of Months</span>
+	    <option selected>Select Month</option>
+	    {% for m in months %}
+	    <option value="{{ m.month }}">{{ m.month }}</option>
+	    {% endfor %}
+	  </select>
 
-  <div class="col-md-10">
+	  <select id="select_date" name="date" class="add_sched" disabled>
+            <span class="sr-only">Drop Down for List of Dates </span>
+	    <option selected>Select Date</option> 
+	    {% for date in datess %}
+	    <option value="{{ date }}">{{ date }}</option>
+	    {% endfor %}
+	  </select>
 
-    <select id="select_month" name="month" class="add_sched">
-      <option selected>Select Month</option>
-	{% for month in months %}
-	<option value="{{ month }}">{{ month }}</option>
-	{% endfor %}
-    </select>
+	  <select id="time_from" name="date" class="add_sched" disabled>
+            <span class="sr-only">Drop Down for List of Start Time </span>
+	    <option selected>Start Time</option> 
+	  </select>
 
-    <select id="select_date" name="date" class="add_sched" disabled>
-    <option selected>Select Date</option> 
-    {% for date in datess %}
-    <option value="{{ date }}">{{ date }}</option>
-    {% endfor %}
-    </select>
+	  <select id="time_to" name="date" class="add_sched" disabled>
+            <span class="sr-only">Drop Down for List of Finish Time </span>
+	    <option selected>Finish Time</option> 
+	  </select>
 
-    <select id="time_from" name="date" class="add_sched" disabled>
-    <option selected>Start Time</option> 
-    </select>
+	  <input type="text" class="form-control" id="assignment"  placeholder="assignment" disabled>
+	  <span class="sr-only">Input for Assignment</span>
 
-    <select id="time_to" name="date" class="add_sched" disabled>
-    <option selected>Finish Time</option> 
-    </select>
-    </br>
-    </br>
+	<div>
 
-    <button id="create_schedule" class="btn btn-success"><span class="glyphicon glyphicon-ok"> Create</span></button>
-    <button id="reset_sched_form" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"> Reset</span></button>
+	  <button id="create_schedule" class="btn btn-success">
+	    <span class="glyphicon glyphicon-ok"></span>
+	    Create
+	    <span class="sr-only">Create Button</span>
+	  </button>
+
+	  <button id="reset_sched_form" class="btn btn-warning">
+	    <span class="glyphicon glyphicon-refresh"></span>
+	    Reset
+	    <span class="sr-only">Reset Button</span>
+	  </button>
+
+	</div>
 
 
-
-  </div>
+      </div>
 
 
 <!-- <div class="form-group" id="sched_btn"> -->
@@ -110,35 +139,5 @@
 </br>
 </br>
 
-{% if schedules %}
-<div class="schedule_tbl"
-<div class="page-header">
-<h3>Current Schedule <span class="glyphicon glyphicon-list-alt"></span></h3>
-</div>
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>Initals</th>
-      <th>Date</th>
-      <th>Start-End</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr id="">
-      <td>dada</td>
-      <td>some date</td>
-      <td>
-        <a href="#" class="nav nav-pills" role="presentation" id="">View Schedule</a>
-      </td>
-    </tr>
-    
-    
-  </tbody>
-</table>
-
-
-</div>
-{% endif %}
 
 {% endblock %}
