@@ -4,9 +4,9 @@
 {% block view_schedule %}
    {{ super() }}
 
-
-
-<legend><span class="glyphicon glyphicon-th"> Monthly View</span></legend>
+<h2><span class="glyphicon glyphicon-th"></span>
+  Monthly View
+</h2>
 
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -22,25 +22,44 @@
 
 {% if monthly_schedules %}
 
-	    <table class="table table-hover">
+	    <table class="table table-striped" id="monthly_sched">
 	      <thead>
 		<tr>
-		  <th>Initials</th>
-		  <th>Monday</th>
-		  <th>Total Hours</th>
-		  <th>Tuesday</th>
-		  <th>Total Hours</th>
-		  <th>Wednesday</th>
-		  <th>Total Hours</th>
-		  <th>Thursday</th>
-		  <th>Total Hours</th>
-		  <th>Friday</th>
-		  <th>Total Hours</th>
-		  <th>Saturday</th>
-		  <th>Total Hours</th>
-		  <th>Sunday</th>
-		  <th>Total Hours</th>
+		  <th rowspan="2">Name</th>
+		  <th colspan="3">Monday</th>
+		  <th colspan="3">Tuesday</th>
+		  <th colspan="3">Wednesday</th>
+		  <th colspan="3">Thursday</th>
+		  <th colspan="3">Friday</th>
+		  <th colspan="3">Saturday</th>
+		  <th colspan="3">Sunday</th>
 		</tr>
+		<tr>
+		  <th>Scheduling</th>
+		  <th>Assign.</th>
+		  <th>Manhr</th>		  
+ 		  <th>Scheduling</th>
+		  <th>Assign.</th>
+		  <th>Manhr</th>
+		  <th>Scheduling</th>
+		  <th>Assign.</th>
+		  <th>Manhr</th>
+		  <th>Scheduling</th>
+		  <th>Assign.</th>
+		  <th>Manhr</th>
+		  <th>Scheduling</th>
+		  <th>Assign.</th>
+		  <th>Manhr</th>
+		  <th>Scheduling</th>
+		  <th>Assign.</th>
+		  <th>Manhr</th>
+		  <th>Scheduling</th>
+		  <th>Assign.</th>
+		  <th>Manhr</th>
+
+		</tr>
+
+		
 	      </thead>
 	      <tbody>
 		{% for sched in monthly_schedules %}
@@ -52,63 +71,76 @@
 		  <td>{{ sched.name}}({{ sched.initials }})</td>
 
 		  {% if "Monday" in day  %}
-		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
-		  <td bgcolor="red">{{ sched.total_hours }} </td>
+		  <td class="red">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  <td>{{ sched.assignment }} </td>
+		  <td>{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00">RD</td>
-		  <td bgcolor="grey">N/A</td>
+		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td>N/A</td>
+		  <td>N/A</td>
 		  {% endif %}
 
-		  {% if "Tuesday" in day %}
-		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
-		  <td bgcolor="red">{{ sched.total_hours }} </td>
+		  {% if "Tuesday" in day  %}
+		  <td class="red">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  <td>{{ sched.assignment }} </td>
+		  <td>{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00">RD</td>
-		  <td bgcolor="grey">N/A</td>
+		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td>N/A</td>
+		  <td>N/A</td>
 		  {% endif %}
-
 
 		  {% if "Wednesday" in day  %}
-		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
-		  <td bgcolor="red">{{ sched.total_hours }} </td>
+		  <td class="red">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  <td>{{ sched.assignment }} </td>
+		  <td>{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00">RD</td>
-		  <td bgcolor="grey">N/A</td>
+		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td>N/A</td>
+		  <td>N/A</td>
 		  {% endif %}
 
-		  {% if "Thursday" in day %}
-		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
-		  <td bgcolor="red">{{ sched.total_hours }} </td>
+		  {% if "Thursday" in day  %}
+		  <td class="red">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  <td>{{ sched.assignment }} </td>
+		  <td>{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00">RD</td>
-		  <td bgcolor="grey">N/A</td>
-		  {% endif %}
-
-
-		  {% if "Friday" in day %}
-		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td
-		  <td bgcolor="red">{{ sched.total_hours }} </td>
-		  {% else  %}
-		  <td bgcolor="#FFFF00">RD</td>
-		  <td bgcolor="grey">N/A</td>
+		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td>N/A</td>
+		  <td>N/A</td>
 		  {% endif %}
 
 
-		  {% if "Saturday" in day %}
-		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
-		  <td bgcolor="red">{{ sched.total_hours }} </td>
+		  {% if "Friday" in day  %}
+		  <td class="red">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  <td>{{ sched.assignment }} </td>
+		  <td>{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00">RD</td>
-		  <td bgcolor="grey">N/A</td>
+		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td>N/A</td>
+		  <td>N/A</td>
 		  {% endif %}
 
-		  {% if "Sunday" in day %}
-		  <td bgcolor="#33CC33">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
-		  <td bgcolor="red">{{ sched.total_hours }} </td>
+		  {% if "Saturday" in day  %}
+		  <td class="red">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  <td>{{ sched.assignment }} </td>
+		  <td>{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00">RD</td>
-		  <td bgcolor="grey">N/A</td>
+		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td>N/A</td>
+		  <td>N/A</td>
 		  {% endif %}
+
+		  {% if "Sunday" in day  %}
+		  <td class="red">{{ date.year }}-{{ date.month }}-{{ date.day }} ({{ sched.from }}-{{ sched.to }}) </td>
+		  <td>{{ sched.assignment }} </td>
+		  <td>{{ sched.total_hours }} </td>
+		  {% else  %}
+		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td>N/A</td>
+		  <td>N/A</td>
+		  {% endif %}
+
 
 		</tr>		
 		{% endfor %}
@@ -117,4 +149,8 @@
 	    </table>
 
 {% endif %}
+
+
+	    
+
 {% endblock %}

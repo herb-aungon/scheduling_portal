@@ -20,6 +20,7 @@
 		<tr>
 		  <th>Month</th>
 		  <th>Last Updated</th>
+		  <th>Total Hours Booked</th>
 		  <th>Action</th>
 		</tr>
 	      </thead>
@@ -29,6 +30,7 @@
 		<tr id="{{ m.month }}">
 		  <td>{{ m.month }}</td>
 		  <td>{{ m.last_updated }}</td>
+		  <td>{{ m.total_hours }}</td>
 		  <td>
 		    <button id="{{ m.month }}" class="view_sched_btn"><span class="glyphicon glyphicon-calendar"></span>
 		      View Schedule

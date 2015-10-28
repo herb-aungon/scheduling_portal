@@ -43,21 +43,12 @@
 	  </div>
 
 	</ul>
-
-	<div class="back_btn">
-          <button type="button" class="btn btn-default" id="back" style="float: left;">
-              <span class="glyphicon glyphicon-triangle-left"></span>
-	      <span class="sr-only">Back Button</span>
-	      Back
-            </button>
-	</div>
-
-
+	
+	<div class="container_sched">{% block view_schedule %}{% endblock %} </div>
 	<div style="background:transparent !important" class="jumbotron">
 
 
 	    {% block list_months %}{% endblock %}  
-	    {% block view_schedule %}{% endblock %}  
 	    {% block staff_management %}{% endblock %}
 	    {% block profile %}{% endblock %}
 	    {% include 'staff_schedule.html' %}
