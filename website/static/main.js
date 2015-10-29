@@ -1,10 +1,65 @@
-var url = "http://192.168.1.69/"
+var url = "http://herbportal.ddns.net/"
 var current_url = window.location.href
 var data = []
 var sched_url;
 var initials;
 $( document ).ready(function() {
+    if( $('#initials').length ){
     initials=document.getElementById("initials").value;
+    }
+    if( $('#monthly_sched').length ){
+	var tds = document.getElementById('monthly_sched').getElementsByTagName('td');
+	var sum_mon = 0;
+	var sum_tues = 0;
+	var sum_wed = 0;
+	var sum_thurs = 0;
+	var sum_fri = 0;
+	var sum_sat = 0;
+	var sum_sun = 0;
+
+	for(var i = 0; i < tds.length; i ++) {
+	    if(tds[i].className == 'total_mon') {
+		sum_mon += isNaN(tds[i].innerHTML) ? 0 : parseInt(tds[i].innerHTML);	    
+		document.getElementById('g_total_mon').innerHTML = sum_mon
+	    }
+	    else if(tds[i].className == 'total_tues') {
+		sum_tues += isNaN(tds[i].innerHTML) ? 0 : parseInt(tds[i].innerHTML);	    
+		document.getElementById('g_total_tues').innerHTML = sum_tues
+	    }
+
+	    else if(tds[i].className == 'total_wed') {
+		sum_wed += isNaN(tds[i].innerHTML) ? 0 : parseInt(tds[i].innerHTML);
+		document.getElementById('g_total_wed').innerHTML = sum_wed
+	    }
+
+	    else if(tds[i].className == 'total_thurs') {
+		sum_thurs += isNaN(tds[i].innerHTML) ? 0 : parseInt(tds[i].innerHTML);
+		document.getElementById('g_total_thurs').innerHTML = sum_thurs
+	    }
+	    else if(tds[i].className == 'total_fri') {
+		sum_fri += isNaN(tds[i].innerHTML) ? 0 : parseInt(tds[i].innerHTML);
+		document.getElementById('g_total_fri').innerHTML = sum_fri
+	    }
+
+	    else if(tds[i].className == 'total_sat') {
+		sum_sat += isNaN(tds[i].innerHTML) ? 0 : parseInt(tds[i].innerHTML);
+		document.getElementById('g_total_sat').innerHTML = sum_sat
+	    }
+	    else if(tds[i].className == 'total_sun') {
+		sum_sun += isNaN(tds[i].innerHTML) ? 0 : parseInt(tds[i].innerHTML);
+		document.getElementById('g_total_sun').innerHTML = sum_sun
+	    }
+
+	}
+	console.log(sum_mon);
+	console.log(sum_tues);
+	console.log(sum_wed);
+	console.log(sum_thurs);
+	console.log(sum_fri);
+	console.log(sum_sat);
+	console.log(sum_sun);
+    }
+
 });
 
 

@@ -1,4 +1,4 @@
-import  pprint, dpath.util, requests, datetime, json, bson, copy, calendar, collections
+import  pprint, dpath.util, datetime, json, bson, copy, calendar, collections
 from bson.objectid import ObjectId
 
 class custom_calendar( ):
@@ -8,7 +8,7 @@ class custom_calendar( ):
         self.__now = datetime.datetime.now()        
 
     def list_months(self):
-        months_raw = self.__mongodb.month.find({},{'_id':0})#.sort("month_numb", 1)
+        months_raw = self.__mongodb.month.find({},{'_id':0}).sort("month_number", 1)
         months=[]
         try:
             for month in months_raw:
@@ -33,10 +33,12 @@ class user( ):
         self.__result = {'success':False, 'reason':None, 'data':None}
 
     def check_login(self,login):
+        user_check = None
         try:
             user_check = self.__mongodb.user.find_one( { "username": login.get('username'), "password":login.get('password') } )
         except Exception as e:
-            user_check = None
+            self.__result['reason']="Error!:Reason %s" % e
+            return self.__result
 
         if user_check == None:
             self.__result['reason']="Invalid username/password"
@@ -306,9 +308,19 @@ class schedule( ):
                 "total_hours":total_hours,
                 "date_created":datetime.datetime.strptime(date_created,'%Y-%m-%d %H:%M' )
             }
+
+            months_init = custom_calendar(self.__mongodb)
+            get_months = months_init.list_months()
+            months_raw = get_months.get('data')
+            months={}
+            for m in months_raw:
+                months.update( { m.get('month'):m.get('total_hours') } )
+
+            monthly_total_hours = months.get(data.get('month')) + total_hours 
             
+
             self.__mongodb.schedule.insert(sched)
-            self.__mongodb.month.update( { "month":data.get('month') }, { '$set':{ "last_updated" : date_created } } )
+            self.__mongodb.month.update( { "month":data.get('month') }, { '$set':{ "last_updated" : date_created, "total_hours":monthly_total_hours} } )
 
             self.__result['reason']="Schedule created for %s" % data.get('initials')
             self.__result['success']=True

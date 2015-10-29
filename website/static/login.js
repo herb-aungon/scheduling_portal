@@ -2,7 +2,7 @@ var data_post = [];
 var token_id = 0;
 var data = 0;
 var user = 0;
-var url_1 = "http://192.168.1.69/home/"
+var url_1 = "http://herbportal.ddns.net/home/"
 
 $("#login").click(function() {
     var username = $('#username').val();

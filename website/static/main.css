@@ -168,3 +168,33 @@ margin:10px 0 10px 0;
     
 
 /* } */
+
+
+#monthly_sched td.red{
+    color:red;
+}
+
+
+/* #monthly_sched th.red{ */
+/*     color:red; */
+
+/* } */
+
+
+.row{
+    /* border-style: solid; */
+    /* border-top-style: dotted; */
+    overflow-x:scroll;
+    margin-left:5em;
+    overflow-y:visible;
+    padding-bottom:1px;
+
+}
+
+.name_col{
+    
+    position:absolute;
+    *position: relative; /*ie7*/
+    left:0;
+    width:100px;
+}
