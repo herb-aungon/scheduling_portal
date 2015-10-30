@@ -163,7 +163,7 @@ def staff_add(token_id):
           except Exception as e:
                resp="Failed to load data!Reason: %s" % e
                return json.dumps(resp)
-
+          
           staff_init = staff_management(mongodb)
           add_staff = staff_init.add(payload_json)
 
@@ -176,6 +176,50 @@ def staff_add(token_id):
           resp = redirect(url_for('log_in_get'))
           flash(message)
      return resp
+
+
+@app.route("//home/<token_id>/export", methods = [ 'OPTIONS' ] )
+def export_options():
+     return ''
+
+@app.route("/home/<token_id>/export", methods = [ 'GET' ] )
+def export_get(token_id):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          init_export = export(mongodb)
+          get_export=init_export.get()
+          if get_export.get('success') == False:
+               message = json.dumps(get_export.get('reason'))
+               flash(message)
+          resp = render_template('export.html', export_data = get_export.get('data'))#json.dumps(add_staff, default=default_encoder, indent = 1)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+          flash(message)
+     return resp
+
+
+@app.route("/home/<token_id>/export", methods = [ 'POST' ] )
+def post_get(token_id):
+     token_init = token(mongodb)
+     token_auth= token_init.token_validator(token_id)
+
+     if token_auth.get('success')==True:
+          init_export = export(mongodb)
+          get_export=init_export.get()
+          if get_export.get('success') == False:
+               message = json.dumps(get_export.get('reason'))
+               flash(message)
+          resp = render_template('export.html', export_data = get_export.get('data'))#json.dumps(add_staff, default=default_encoder, indent = 1)
+     else:
+          message = json.dumps("Failed: %s" % token_auth.get('reason'))
+          resp = redirect(url_for('log_in_get'))
+          flash(message)
+     return resp
+
+
 
 @app.route("/home/<token_id>/staff_management/<prof_init>", methods = [ 'GET' ] )
 def profile_get_(token_id,prof_init):

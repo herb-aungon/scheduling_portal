@@ -15,7 +15,7 @@ class custom_calendar( ):
                 months.append(month)
 
             self.__result['success']=True
-            self.__result['reason']="Months List Generated"
+            self.__result['reason']="List of Months returned"
             self.__result['data']= months
 
 
@@ -145,15 +145,22 @@ class staff_management( ):
         self.__result = {'success':False, 'reason':None, 'data':None}
         
     def add(self, details):
-        try:
-            if len(details.get('initials')) == 0:
-                self.__result['reason']="Failed to add!Initials cannot be empty"
-            else:                
-                self.__mongodb.staff.insert(details)
-                self.__result['success']=True
-                self.__result['reason']="Staff added(%s)" % details.get('initials')
-        except Exception as e:
-            self.__result['reason']="Failed! %s" % e
+        initials = details.get('initials').lower()
+        profile_init = profile(self.__mongodb)
+        get_profile = profile_init.get(initials)
+        
+        if get_profile.get('data')!=None:
+            self.__result['reason']="Failed to add!Initials %s already exist" % initials
+        else:
+            try:
+                if len(details.get('initials')) == 0:
+                    self.__result['reason']="Failed to add!Initials cannot be empty"
+                else:                
+                    self.__mongodb.staff.insert(details)
+                    self.__result['success']=True
+                    self.__result['reason']="Staff added(%s)" % initials
+            except Exception as e:
+                self.__result['reason']="Failed! %s" % e
             
         return self.__result
 
@@ -281,7 +288,7 @@ class profile( ):
         return self.__result
 
 
-
+ 
 class schedule( ):
     def __init__(self, mongodb):
         self.__mongodb = mongodb
@@ -293,37 +300,41 @@ class schedule( ):
             date_fragments = data.get('date').split(":")
             from_fragments = data.get('from').split(":")
             to_fragments = data.get('to').split(":")
-            total_hours = int(to_fragments[0]) - int(from_fragments[0])
-            start_date = "%s" % (date_fragments[0])
-            date_created = "%s-%s-%s %s:%s"%(self.__now.year, self.__now.month, self.__now.day, self.__now.hour, self.__now.minute)
-            sched={
-                "start_date":datetime.datetime.strptime(start_date,'%Y-%m-%d' ),
-                "day":date_fragments[1],
-                "initials":data.get('initials'),
-                "from":data.get('from'),
-                "to":data.get('to'),
-                "month":data.get('month'),
-                "name":data.get('name'),
-                "assignment":data.get('assignment'),
-                "total_hours":total_hours,
-                "date_created":datetime.datetime.strptime(date_created,'%Y-%m-%d %H:%M' )
-            }
+            
+            if int(to_fragments[0])<=int(from_fragments[0]):
+                self.__result['reason']="Failed to add schedule for %s. Start and Finish time invalid" % data.get('initials')
+            else:
+                total_hours = int(to_fragments[0]) - int(from_fragments[0])
+                start_date = "%s" % (date_fragments[0])
+                date_created = "%s-%s-%s %s:%s"%(self.__now.year, self.__now.month, self.__now.day, self.__now.hour, self.__now.minute)
+                sched={
+                    "start_date":datetime.datetime.strptime(start_date,'%Y-%m-%d' ),
+                    "day":date_fragments[1],
+                    "initials":data.get('initials'),
+                    "from":data.get('from'),
+                    "to":data.get('to'),
+                    "month":data.get('month'),
+                    "name":data.get('name'),
+                    "assignment":data.get('assignment'),
+                    "total_hours":total_hours,
+                    "date_created":datetime.datetime.strptime(date_created,'%Y-%m-%d %H:%M' )
+                }
 
-            months_init = custom_calendar(self.__mongodb)
-            get_months = months_init.list_months()
-            months_raw = get_months.get('data')
-            months={}
-            for m in months_raw:
-                months.update( { m.get('month'):m.get('total_hours') } )
+                months_init = custom_calendar(self.__mongodb)
+                get_months = months_init.list_months()
+                months_raw = get_months.get('data')
+                months={}
+                for m in months_raw:
+                    months.update( { m.get('month'):m.get('total_hours') } )
 
-            monthly_total_hours = months.get(data.get('month')) + total_hours 
+                monthly_total_hours = months.get(data.get('month')) + total_hours 
             
 
-            self.__mongodb.schedule.insert(sched)
-            self.__mongodb.month.update( { "month":data.get('month') }, { '$set':{ "last_updated" : date_created, "total_hours":monthly_total_hours} } )
+                self.__mongodb.schedule.insert(sched)
+                self.__mongodb.month.update( { "month":data.get('month') }, { '$set':{ "last_updated" : date_created, "total_hours":monthly_total_hours} } )
 
-            self.__result['reason']="Schedule created for %s" % data.get('initials')
-            self.__result['success']=True
+                self.__result['reason']="Schedule created for %s" % data.get('initials')
+                self.__result['success']=True
             
         except Exception as e:
             self.__result['reason']="Failed to create schedule for %s!Reason:%s" % (data.get('initials'), e)
@@ -382,3 +393,39 @@ class schedule( ):
             self.__result['reason']="Unable to find schedule for %s month!Reason:%s" % (month, e)
             
         return self.__result
+
+
+    
+ 
+class export( ):
+    def __init__(self, mongodb):
+        self.__mongodb = mongodb
+        self.__result = {'success':False, 'reason':None, 'data':None}
+
+    def get(self):
+        try:
+            export_raw = self.__mongodb.month.find( { "last_updated":{"$ne":None } } )
+            export=[]
+            for e in export_raw:
+                export.append(e)
+            self.__result['reason']="List of Months available for exportare returned"
+            self.__result['success']=True
+            self.__result['data']=export
+        except Exception as e:
+            self.__result['reason']="Unable to find schedule to be exported!Reason:%s" % e
+        return self.__result
+
+    # def export_to_pc(self, data):
+    #     try:
+    #         sched_raw = self.__mongodb.month.find( { "month": data.get('month') } )
+    #         sched={}
+    #         day =[]
+    #         for s in sched_raw:
+    #             day.append(e.get('day'))
+                
+    #         self.__result['reason']="Scheduling for the month of % are exported" % data.get('month')
+    #         self.__result['success']=True
+    #         self.__result['data']=""
+    #     except Exception as e:
+    #         self.__result['reason']="Unable to find schedule to be exported!Reason:%s" % e
+    #     return self.__result
