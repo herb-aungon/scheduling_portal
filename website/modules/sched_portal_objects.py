@@ -1,4 +1,4 @@
-import  pprint, dpath.util, datetime, json, bson, copy, calendar, collections
+import  pprint, dpath.util, datetime, json, bson, copy, calendar, collections, csv
 from bson.objectid import ObjectId
 
 class custom_calendar( ):
@@ -415,17 +415,26 @@ class export( ):
             self.__result['reason']="Unable to find schedule to be exported!Reason:%s" % e
         return self.__result
 
-    # def export_to_pc(self, data):
-    #     try:
-    #         sched_raw = self.__mongodb.month.find( { "month": data.get('month') } )
-    #         sched={}
-    #         day =[]
-    #         for s in sched_raw:
-    #             day.append(e.get('day'))
-                
-    #         self.__result['reason']="Scheduling for the month of % are exported" % data.get('month')
-    #         self.__result['success']=True
-    #         self.__result['data']=""
-    #     except Exception as e:
-    #         self.__result['reason']="Unable to find schedule to be exported!Reason:%s" % e
-    #     return self.__result
+    def export_to_pc(self, data):
+        try:
+            if data.get('month')==None:
+                self.__result['reason']="month is empty"
+            else:
+                sched_raw = self.__mongodb.month.find( { "month": data.get('month') } )
+                sched={}
+                day =[]
+                for s in sched_raw:
+                    day.append(s.get('day'))
+                file_name = "novermber.csv" 
+                my_dict = {"test": 1, "testing": 2}
+
+                with open(file_name, 'wb') as f:  # Just use 'w' mode in 3.x
+                    w = csv.DictWriter(f, my_dict.keys())
+                    w.writeheader()
+                    w.writerow(my_dict)
+                self.__result['reason']="Scheduling for the month of % are exported" % data.get('month')
+                self.__result['success']=True
+                self.__result['data']=file_name
+        except Exception as e:
+            self.__result['reason']="Unable to export schedule!Reason:%s" % e
+        return self.__result

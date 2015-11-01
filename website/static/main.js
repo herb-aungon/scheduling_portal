@@ -51,13 +51,13 @@ $( document ).ready(function() {
 	    }
 
 	}
-	console.log(sum_mon);
-	console.log(sum_tues);
-	console.log(sum_wed);
-	console.log(sum_thurs);
-	console.log(sum_fri);
-	console.log(sum_sat);
-	console.log(sum_sun);
+	// console.log(sum_mon);
+	// console.log(sum_tues);
+	// console.log(sum_wed);
+	// console.log(sum_thurs);
+	// console.log(sum_fri);
+	// console.log(sum_sat);
+	// console.log(sum_sun);
     }
 
 });
@@ -99,6 +99,13 @@ $("#home").click(function() {
     var token = localStorage.getItem("token");
     window.location.href = url + "home/" + token;
 });
+
+
+$("#export").click(function() {
+    var token = localStorage.getItem("token");
+    window.location.href = url + "home/" + token + "/export";
+});
+
 
 
 $("#reset").click(function() {
@@ -351,4 +358,106 @@ $('ul.nav > li').click(function(){
     $(this).siblings('li').children('a').removeClass('active');
 });
 
+$('#export_month').on('change', function() {
 
+    var exp_month = {}
+    exp_month["month"] = document.getElementById("export_month").value;
+    var exp_data= JSON.stringify( exp_month);
+    
+    console.log(exp_data);
+
+    // var token = localStorage.getItem("token");
+    // var init=document.getElementById("initials").value;
+    // var gen_url = url + "home/" + token + "/staff_management/" + init + "/create_sched"
+    // console.log(gen_url);
+
+    // $.ajax({
+    //     type : "POST",
+    //     url : gen_url,
+    //     data: json_data,
+    //     contentType: 'application/json;charset=UTF-8',
+    //     success: function(result) {
+    //         console.log(result);
+    //         json_result = JSON.parse(result);
+    //         data_ = json_result['data'];
+    //         console.log(data_);
+    // 	    //localStorage.setItem("data", data);
+    // 	    data = data_
+    //     },
+    //     async: false
+    // });
+
+    //enable dropdown once selected
+    $("#email").prop("disabled", false);
+
+
+});
+
+$("#export_sched").click(function() {
+    //creating a temporary HTML link element (they support setting file names)
+    var a = document.createElement('a');
+    //getting data from our div that contains the HTML table
+    var data_type = 'data:application/vnd.ms-excel';
+    var table_div = document.getElementById('test');
+    var table_html = table_div.outerHTML.replace(/ /g, '%20');
+    a.href = data_type + ', ' + table_html;
+    //setting the file name
+    a.download = 'monthly_sched' + '.xls';
+    //triggering the function
+    a.click();
+    //just in case, prevent default behaviour
+    //e.preventDefault();
+});
+
+// $(document).ready(function () {
+
+//     function exportTableToCSV($table, filename) {
+	
+// 	var $rows = $table.find('tr:has(td)'),
+
+// 	    // Temporary delimiter characters unlikely to be typed by keyboard
+// 	    // This is to avoid accidentally splitting the actual contents
+// 	    tmpColDelim = String.fromCharCode(11), // vertical tab character
+// 	    tmpRowDelim = String.fromCharCode(0), // null character
+
+// 	    // actual delimiter characters for CSV format
+// 	    colDelim = '","',
+// 	    rowDelim = '"\r\n"',
+
+// 	    // Grab text from table into CSV formatted string
+// 	    csv = '"' + $rows.map(function (i, row) {
+// 		var $row = $(row),
+// 		    $cols = $row.find('td');
+
+// 		return $cols.map(function (j, col) {
+// 		    var $col = $(col),
+// 			text = $col.text();
+
+// 		    return text.replace(/"/g, '""'); // escape double quotes
+
+// 		}).get().join(tmpColDelim);
+
+// 	    }).get().join(tmpRowDelim)
+// 	    .split(tmpRowDelim).join(rowDelim)
+// 	    .split(tmpColDelim).join(colDelim) + '"',
+
+// 	    // Data URI
+// 	    csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+// 	$(this)
+// 	    .attr({
+// 		'download': filename,
+// 		'href': csvData,
+// 		'target': '_blank'
+// 	    });
+//     }
+
+//     // This must be a hyperlink
+//     $("#export_sched").on('click', function (event) {
+// 	// CSV
+// 	exportTableToCSV.apply(this, [$('#test>table'), 'export.csv']);
+
+// 	// IF CSV, don't do event.preventDefault() or return false
+// 	// We actually need this to be a typical hyperlink
+//     });
+// });

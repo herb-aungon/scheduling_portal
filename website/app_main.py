@@ -1,9 +1,9 @@
 #!/usr/bin/env python                                                                                                                                                                                       
 #-*- coding: utf-8 -*- 
 
-from flask import Flask,request, render_template, flash, jsonify, make_response, Response, url_for, redirect
+from flask import Flask,request, render_template, flash, jsonify, make_response, Response, url_for, redirect,send_from_directory
 from pymongo import MongoClient
-import json, datetime, local_settings, calendar, collections
+import json, datetime, local_settings, calendar, collections, csv
 from modules.sched_portal_objects import *
 
 config = local_settings.env
@@ -34,7 +34,7 @@ def internal_500_error( exception ):
 @app.errorhandler( 404 )
 def internal_404_error( exception ):
      #app.logger.exception( exception )
-     return 'scheduler <br/>\n%s<br/>\n%s' % ( exception, request.url )
+     return 'scheduler \n%s\n%s' % ( exception, request.url )
 
 @app.errorhandler( 401 )
 def internal_401_error( exception ):
@@ -202,17 +202,44 @@ def export_get(token_id):
 
 
 @app.route("/home/<token_id>/export", methods = [ 'POST' ] )
-def post_get(token_id):
+def export_post(token_id):
      token_init = token(mongodb)
      token_auth= token_init.token_validator(token_id)
 
      if token_auth.get('success')==True:
-          init_export = export(mongodb)
-          get_export=init_export.get()
-          if get_export.get('success') == False:
-               message = json.dumps(get_export.get('reason'))
-               flash(message)
-          resp = render_template('export.html', export_data = get_export.get('data'))#json.dumps(add_staff, default=default_encoder, indent = 1)
+          try:
+               payload = request.data
+               payload_json = json.loads(payload)
+          except Exception as e:
+               resp="Failed to load data!Reason: %s" % e
+               return json.dumps(resp)
+          
+          # init_export = export(mongodb)
+          # get_export=init_export.export_to_pc(payload_json)
+          # if get_export.get('success') == False:
+          #      message = json.dumps(get_export.get('reason'))
+          #      flash(message)
+          # else:
+          #      file_name="/home/pi/Desktop/scheduling_portal/website/%s" % get_export.get('data')
+          #      with open(file_name, 'r') as f:
+          #           body = f.read()
+          #      resp = make_response(body)
+          #      resp.headers["Content-Disposition"] = "attachment; filename=%s" % file_name
+          # resp = message
+
+          # my_dict = {"test": 1, "testing": 2}
+
+          # with open('mycsvfile.csv', 'wb') as f:  # Just use 'w' mode in 3.x
+          #      w = csv.DictWriter(f, my_dict.keys())
+          #      w.writeheader()
+          #      w.writerow(my_dict)
+
+          #      file_name="/home/pi/Desktop/scheduling_portal/website/mycsvfile.csv"
+          #      with open(file_name, 'r') as f:
+          #           body = f.read()
+          #      resp = make_response(body)
+          #      resp.headers["Content-Disposition"] = "attachment; filename=%s" % file_name
+
      else:
           message = json.dumps("Failed: %s" % token_auth.get('reason'))
           resp = redirect(url_for('log_in_get'))
