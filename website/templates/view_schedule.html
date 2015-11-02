@@ -23,7 +23,7 @@
 
 {% if monthly_schedules %}
 
-	    <table class="table table-hover" id="monthly_sched">
+	    <table class="table table-bordered" id="monthly_sched">
 	      <thead>
 		<tr>
 		  <th rowspan="2" class="stubhead">Name</th>
@@ -76,7 +76,7 @@
 		  <td>{{ sched.assignment }} </td>
 		  <td class="total_mon">{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td bgcolor="#E9D254" class="red">RD</td>
 		  <td>N/A</td>
 		  <td>0</td>
 		  {% endif %}
@@ -86,7 +86,7 @@
 		  <td>{{ sched.assignment }} </td>
 		  <td class="total_tues">{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td bgcolor="#E9D254" class="red">RD</td>
 		  <td>N/A</td>
 		  <td>0</td>
 		  {% endif %}
@@ -96,7 +96,7 @@
 		  <td>{{ sched.assignment }} </td>
 		  <td class="total_wed">{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td bgcolor="#E9D254" class="red">RD</td>
 		  <td>N/A</td>
 		  <td>0</td>
 		  {% endif %}
@@ -106,7 +106,7 @@
 		  <td>{{ sched.assignment }} </td>
 		  <td class="total_thurs">{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td bgcolor="#E9D254" class="red">RD</td>
 		  <td>N/A</td>
 		  <td>0</td>
 		  {% endif %}
@@ -117,7 +117,7 @@
 		  <td>{{ sched.assignment }} </td>
 		  <td class="total_fri">{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td bgcolor="#E9D254" class="red">RD</td>
 		  <td>N/A</td>
 		  <td>0</td>
 		  {% endif %}
@@ -127,7 +127,7 @@
 		  <td>{{ sched.assignment }} </td>
 		  <td class="total_sat">{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td bgcolor="#E9D254" class="red">RD</td>
 		  <td>N/A</td>
 		  <td>0</td>
 		  {% endif %}
@@ -137,7 +137,7 @@
 		  <td>{{ sched.assignment }} </td>
 		  <td class="total_sun">{{ sched.total_hours }} </td>
 		  {% else  %}
-		  <td bgcolor="#FFFF00" class="red">RD</td>
+		  <td bgcolor="#E9D254" class="red">RD</td>
 		  <td>N/A</td>
 		  <td>0</td>
 		  {% endif %}
@@ -146,35 +146,35 @@
 		</tr>		
 		{% endfor %}
 		<tr>
-		  <td>Total</td>
-		  <td></td>
-		  <td></td>
-		  <td id="g_total_mon"></td>
-		  <td></td>
-		  <td></td>
-		  <td id="g_total_tues"></td>
-		  <td></td>
-		  <td></td>
-		  <td id="g_total_wed"></td>
-		  <td></td>
-		  <td></td>
-		  <td id="g_total_thurs"></td>
-		  <td></td>
-		  <td></td>
-		  <td id="g_total_fri"></td>
-		  <td></td>
-		  <td></td>
-		  <td id="g_total_sat"></td>
-		  <td></td>
-		  <td></td>
-		  <td id="g_total_sun"></td>
+		  <td class="total" class="total">Total</td>
+		  <td class="total"></td>
+		  <td class="total"></td>
+		  <td class="total" id="g_total_mon"></td>
+		  <td class="total"></td>
+		  <td class="total"></td>
+		  <td class="total" id="g_total_tues"></td>
+		  <td class="total"></td>
+		  <td class="total"></td>
+		  <td class="total" id="g_total_wed"></td>
+		  <td class="total"></td>
+		  <td class="total"></td>
+		  <td class="total" id="g_total_thurs"></td>
+		  <td class="total"></td>
+		  <td class="total"></td>
+		  <td class="total" id="g_total_fri"></td>
+		  <td class="total"></td>
+		  <td class="total"></td>
+		  <td class="total" id="g_total_sat"></td>
+		  <td class="total"></td>
+		  <td class="total"></td>
+		  <td class="total" id="g_total_sun"></td>
 		</tr>
 
 	      </tbody>
 	    </table>
 
 {% endif %}
-<a href="#" class="btn btn-primary" id="export_sched"><span class="glyphicon glyphicon-export"></span> Export To CSV</a>
+<a href="#" class="btn btn-primary" id="export_sched"><span class="glyphicon glyphicon-export"></span> Export To Excel</a>
 </div>
 	    
 
