@@ -347,11 +347,6 @@ $(".view_sched_btn").click(function() {
 
 });
 
-$("#back").click(function() {
-    window.history.back();
-});
-
-
 
 $('ul.nav > li').click(function(){
     $(this).children('a').toggleClass('active');
